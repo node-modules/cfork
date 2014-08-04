@@ -17,8 +17,6 @@ test: install
 		$(MOCHA_OPTS) \
 		$(TESTS)
 
-test-all: install jshint test
-
 autod: install
 	@./node_modules/.bin/autod -w --prefix "~"
 	@$(MAKE) install
