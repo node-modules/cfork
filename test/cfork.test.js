@@ -46,7 +46,6 @@ describe('cfork.test.js', function () {
   it('should mock worker error', function (done) {
     urllib.request('http://localhost:1984/error', function (err, body, res) {
       should.exist(err);
-      err.message.should.containEql('socket hang up');
       done();
     });
   });

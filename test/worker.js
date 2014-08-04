@@ -15,11 +15,17 @@
  */
 
 var http = require('http');
+var graceful = require('graceful');
 
-http.createServer(function (req, res) {
+var app = http.createServer(function (req, res) {
   if (req.url === '/error') {
-    process.disconnect();
     mock.error();
   }
   res.end(req.method + ' ' + req.url);
 }).listen(1984);
+
+
+graceful({
+  server: app,
+  killTimeout: 500,
+});

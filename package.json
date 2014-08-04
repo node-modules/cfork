@@ -17,6 +17,7 @@
   "devDependencies": {
     "autod": "*",
     "contributors": "*",
+    "graceful": "~0.1.0",
     "jshint": "*",
     "mocha": "*",
     "pedding": "~1.0.0",
