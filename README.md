@@ -1,0 +1,79 @@
+cfork
+=======
+
+[![NPM version][npm-image]][npm-url]
+[![build status][travis-image]][travis-url]
+[![Gittip][gittip-image]][gittip-url]
+[![David deps][david-image]][david-url]
+
+[npm-image]: https://img.shields.io/npm/v/cfork.svg?style=flat
+[npm-url]: https://npmjs.org/package/cfork
+[travis-image]: https://img.shields.io/travis/node-modules/cfork.svg?style=flat
+[travis-url]: https://travis-ci.org/node-modules/cfork
+[gittip-image]: https://img.shields.io/gittip/fengmk2.svg?style=flat
+[gittip-url]: https://www.gittip.com/fengmk2/
+[david-image]: https://img.shields.io/david/node-modules/cfork.svg?style=flat
+[david-url]: https://david-dm.org/node-modules/cfork
+
+cluster fork and restart easy way.
+
+* Easy fork with worker file path
+* Handle worker restart, event it was exit unexpected.
+* Auto error log process `uncaughtException` event
+
+## Install
+
+```bash
+$ npm install cfork --save
+```
+
+## Usage
+
+```js
+var cfork = require('cfork');
+var util = require('util');
+
+cfork({
+  exec: '/your/app/worker.js',
+  // count: require('os').cpus().length,
+})
+.on('fork', function (worker) {
+  console.warn('[%s] [worker:%d] new worker start', Date(), worker.process.pid);
+})
+.on('disconnect', function (worker) {
+  console.warn('[%s] [master:%s] wroker:%s disconnect, suicide: %s, state: %s.',
+    Date(), process.pid, worker.process.pid, worker.suicide, worker.state);
+})
+.on('exit', function (worker, code, signal) {
+  var exitCode = worker.process.exitCode;
+  var err = new Error(util.format('worker %s died (code: %s, signal: %s, suicide: %s, state: %s)',
+    worker.process.pid, exitCode, signal, worker.suicide, worker.state));
+  err.name = 'WorkerDiedError';
+  console.error('[%s] [master:%s] wroker exit: %s', Date(), process.pid, err.stack);
+});
+```
+
+## License
+
+(The MIT License)
+
+Copyright (c) 2014 fengmk2 &lt;fengmk2@gmail.com&gt; and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
