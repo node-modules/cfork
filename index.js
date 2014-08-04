@@ -36,23 +36,29 @@ function fork(options) {
   }
 
   var disconnects = {};
+  var disconnectCount = 0;
+  var unexpectedCount = 0;
 
   cluster.on('disconnect', function (worker) {
+    disconnectCount++;
     disconnects[worker.process.pid] = new Date();
     cluster.fork();
   });
 
   cluster.on('exit', function (worker, code, signal) {
     if (disconnects[worker.process.pid]) {
+      delete disconnects[worker.process.pid];
       // worker disconnect first, exit expected
       return;
     }
 
+    unexpectedCount++;
     var exitCode = worker.process.exitCode;
     var err = new Error(util.format('worker:%s died unexpected (code: %s, signal: %s, suicide: %s, state: %s)',
       worker.process.pid, exitCode, signal, worker.suicide, worker.state));
     err.name = 'WorkerDiedUnexpectedError';
-    console.error('[%s] [cfork:master:%s] %s', Date(), process.pid, err.stack);
+    console.error('[%s] [cfork:master:%s] (total %d disconnect, %d unexpected exit) %s',
+      Date(), process.pid, disconnectCount, unexpectedCount, err.stack);
     cluster.fork();
   });
 
@@ -60,6 +66,7 @@ function fork(options) {
     process.on('uncaughtException', function (err) {
       console.error('[%s] [cfork:master:%s] master uncaughtException: %s', Date(), process.pid, err.stack);
       console.error(err);
+      console.error('(total %d disconnect, %d unexpected exit)', disconnectCount, unexpectedCount);
     });
   }
 
