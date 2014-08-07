@@ -29,6 +29,8 @@ $ npm install cfork --save
 
 ## Usage
 
+### Example
+
 ```js
 var cfork = require('cfork');
 var util = require('util');
@@ -50,8 +52,27 @@ cfork({
     worker.process.pid, exitCode, signal, worker.suicide, worker.state));
   err.name = 'WorkerDiedError';
   console.error('[%s] [master:%s] wroker exit: %s', Date(), process.pid, err.stack);
+})
+
+// if you do not listen to this event
+// cfork will output this message to sterror
+.on('unexpectedExit', function (worker, code, signal) {
+  //logger what you want
+});
+
+// if you do not listen to this event
+// cfork will listen it and output the error message to stderror
+process.on('uncaughtException', function (err) {
+  // do what you want
 });
 ```
+
+### Options
+
+- **exec** : exec file path
+- **count** : fork worker nums, default is `os.cpus().length`
+- **refork** : refork when worker disconnect or unexpected exit, default is `true`
+
 
 ## License
 
