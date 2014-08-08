@@ -55,13 +55,13 @@ cfork({
 })
 
 // if you do not listen to this event
-// cfork will output this message to sterror
+// cfork will output this message to stderr
 .on('unexpectedExit', function (worker, code, signal) {
   //logger what you want
 });
 
 // if you do not listen to this event
-// cfork will listen it and output the error message to stderror
+// cfork will listen it and output the error message to stderr
 process.on('uncaughtException', function (err) {
   // do what you want
 });
