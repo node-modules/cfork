@@ -1,4 +1,9 @@
 
+1.1.0 / 2014-08-08
+==================
+
+ * defer add listenners, add options.refork, optional unexpectedExit event
+
 1.0.1 / 2014-08-04
 ==================
 
