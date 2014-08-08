@@ -18,7 +18,7 @@ var cluster = require('cluster');
 var os = require('os');
 var util = require('util');
 
-var defer = setImmediate || process.nextTick;
+var defer = global.setImmediate || process.nextTick;
 
 module.exports = fork;
 
