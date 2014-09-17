@@ -74,7 +74,7 @@ function fork(options) {
     if (process.listeners('uncaughtException').length === 0) {
       process.on('uncaughtException', onerror);
     }
-    if (cluster.listeners('unexpectedExit') === 0) {
+    if (cluster.listeners('unexpectedExit').length === 0) {
       cluster.on('unexpectedExit', onUnexpected);
     }
   });
