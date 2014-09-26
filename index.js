@@ -40,6 +40,9 @@ function fork(options) {
   var exec = options.exec;
   var count = options.count || os.cpus().length;
   var refork = options.refork !== false;
+  var limit = options.limit || 60;
+  var duration = options.duration || 60000; // 1 min
+  var reforks = [];
 
   if (exec) {
     cluster.setupMaster({
@@ -54,7 +57,7 @@ function fork(options) {
   cluster.on('disconnect', function (worker) {
     disconnectCount++;
     disconnects[worker.process.pid] = new Date();
-    refork && cluster.fork();
+    allow() && cluster.fork();
   });
 
   cluster.on('exit', function (worker, code, signal) {
@@ -64,7 +67,7 @@ function fork(options) {
       return;
     }
     unexpectedCount++;
-    refork && cluster.fork();
+    allow() && cluster.fork();
     cluster.emit('unexpectedExit', worker, code, signal);
   });
 
@@ -84,6 +87,30 @@ function fork(options) {
   }
 
   return cluster;
+
+  /**
+   * allow refork
+   */
+  function allow() {
+    if (!refork) {
+      return false;
+    }
+
+    var times = reforks.push(Date.now());
+
+    if (times > limit) {
+      reforks.shift();
+    }
+
+    var span = reforks[reforks.length - 1] - reforks[0];
+    var canFork = reforks.length < limit || span > duration;
+
+    if (!canFork) {
+      cluster.emit('reachReforkLimit');
+    }
+
+    return canFork;
+  }
 
   /**
    * uncaughtException default handler
