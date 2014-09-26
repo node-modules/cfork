@@ -22,8 +22,13 @@ var path = require('path');
 
 describe('cfork.test.js', function () {
   var child;
+  var messages = [];
+
   before(function (done) {
     child = childProcess.fork(path.join(__dirname, 'master.js'));
+    child.on('message', function (m) {
+      messages.push(m);
+    });
     setTimeout(done, 1000);
   });
 
@@ -66,6 +71,14 @@ describe('cfork.test.js', function () {
     });
     urllib.request('http://localhost:1984/error', function (err, body, res) {
       should.exist(err);
+      done();
+    });
+  });
+
+  it('should get message `reach refork limit`', function (done) {
+    urllib.request('http://localhost:1984/error', function (err, body, res) {
+      should.exist(err);
+      messages.indexOf('reach refork limit').should.above(-1);
       done();
     });
   });

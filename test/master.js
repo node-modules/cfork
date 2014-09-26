@@ -20,6 +20,8 @@ var cfork = require('../');
 
 var cluster = cfork({
   exec: path.join(__dirname, 'worker.js'),
+  limit: 6,
+  duration: 60000
 })
 .on('fork', function (worker) {
   console.warn('[%s] [worker:%d] new worker start', Date(), worker.process.pid);
@@ -34,6 +36,9 @@ var cluster = cfork({
     worker.process.pid, exitCode, signal, worker.suicide, worker.state));
   err.name = 'WorkerDiedError';
   console.error('[%s] [master:%s] wroker exit: %s', Date(), process.pid, err.stack);
+})
+.on('reachReforkLimit', function () {
+  process.send('reach refork limit');
 });
 
 setTimeout(function () {

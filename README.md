@@ -65,6 +65,11 @@ cfork({
 process.on('uncaughtException', function (err) {
   // do what you want
 });
+
+// emit when reach refork times limit
+.on('reachReforkLimit', function () {
+  // do what you want
+});
 ```
 
 ### Options
@@ -72,7 +77,8 @@ process.on('uncaughtException', function (err) {
 - **exec** : exec file path
 - **count** : fork worker nums, default is `os.cpus().length`
 - **refork** : refork when worker disconnect or unexpected exit, default is `true`
-
+- **limit**: limit refork times within the `duration`, default is `60`
+- **duration**: default is `60000`, one minute (so, the `refork times` < `limit / duration`)
 
 ## License
 
