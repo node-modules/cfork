@@ -1,4 +1,9 @@
 
+1.2.0 / 2014-09-27
+==================
+
+ * add limit for refork times in certain duration
+
 1.1.1 / 2014-09-17
 ==================
 
