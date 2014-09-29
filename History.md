@@ -2,17 +2,17 @@
 1.2.0 / 2014-09-27
 ==================
 
- * add limit for refork times in certain duration
+ * add limit for refork times in certain duration (@coderhaoxin)
 
 1.1.1 / 2014-09-17
 ==================
 
- * Fix unexpectedExit event listeners length
+ * Fix unexpectedExit event listeners length (@JacksonTian)
 
 1.1.0 / 2014-08-08
 ==================
 
- * defer add listenners, add options.refork, optional unexpectedExit event
+ * defer add listenners, add options.refork, optional unexpectedExit event (@dead-horse)
 
 1.0.1 / 2014-08-04
 ==================
@@ -23,4 +23,4 @@
 ==================
 
  * work with graceful
- * first commit
+ * first release
