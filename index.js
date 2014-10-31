@@ -26,6 +26,8 @@ module.exports = fork;
  * cluster fork
  * @param {Object} options
  *   - {String} exec     exec file path
+ *   - {Array} args      exec arguments
+ *   - {Boolean} silent  whether or not to send output to parent's stdio. (Default=false)
  *   - {Number} count    worker num, defualt to `os.cpus().length`
  *   - {Boolean} refork  refork when disconect and unexpected exit, default to `true`
  * @return {Cluster}
@@ -38,6 +40,8 @@ function fork(options) {
 
   options = options || {};
   var exec = options.exec;
+  var args = options.args;
+  var silent = options.silent;
   var count = options.count || os.cpus().length;
   var refork = options.refork !== false;
   var limit = options.limit || 60;
@@ -46,7 +50,9 @@ function fork(options) {
 
   if (exec) {
     cluster.setupMaster({
-      exec: exec
+      exec: exec,
+      args: args,
+      silent: silent,
     });
   }
 
@@ -57,7 +63,9 @@ function fork(options) {
   cluster.on('disconnect', function (worker) {
     disconnectCount++;
     disconnects[worker.process.pid] = new Date();
-    allow() && cluster.fork();
+    if (allow()) {
+      cluster.fork();
+    }
   });
 
   cluster.on('exit', function (worker, code, signal) {
@@ -67,7 +75,9 @@ function fork(options) {
       return;
     }
     unexpectedCount++;
-    allow() && cluster.fork();
+    if (allow()) {
+      cluster.fork();
+    }
     cluster.emit('unexpectedExit', worker, code, signal);
   });
 
