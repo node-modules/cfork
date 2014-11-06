@@ -1,4 +1,10 @@
 
+1.2.2 / 2014-11-06
+==================
+
+ * refactor: ignore undefined
+ * pick of meaningful options to setupMaster
+
 1.2.1 / 2014-11-01
 ==================
 
