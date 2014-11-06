@@ -75,6 +75,7 @@ process.on('uncaughtException', function (err) {
 ### Options
 
 - **exec** : exec file path
+- **args** : exec arguments
 - **count** : fork worker nums, default is `os.cpus().length`
 - **refork** : refork when worker disconnect or unexpected exit, default is `true`
 - **limit**: limit refork times within the `duration`, default is `60`
@@ -84,7 +85,7 @@ process.on('uncaughtException', function (err) {
 
 (The MIT License)
 
-Copyright (c) 2014 fengmk2 &lt;fengmk2@gmail.com&gt; and other contributors
+Copyright (c) 2014 fengmk2 <fengmk2@gmail.com> and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

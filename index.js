@@ -19,18 +19,18 @@ var os = require('os');
 var util = require('util');
 
 var defer = global.setImmediate || process.nextTick;
-var isArray = Array.isArray;
 
 module.exports = fork;
 
 /**
  * cluster fork
- * @param {Object} options
- *   - {String} exec     exec file path
- *   - {Array} args      exec arguments
- *   - {Boolean} silent  whether or not to send output to parent's stdio. (Default=false)
- *   - {Number} count    worker num, defualt to `os.cpus().length`
- *   - {Boolean} refork  refork when disconect and unexpected exit, default to `true`
+ *
+ * @param {Object} [options]
+ *   - {String} exec       exec file path
+ *   - {Array} [args]      exec arguments
+ *   - {Boolean} [silent]  whether or not to send output to parent's stdio, default is `false`
+ *   - {Number} [count]    worker num, defualt is `os.cpus().length`
+ *   - {Boolean} [refork]  refork when disconect and unexpected exit, default is `true`
  * @return {Cluster}
  */
 
@@ -40,27 +40,23 @@ function fork(options) {
   }
 
   options = options || {};
-  var exec = options.exec;
-  var args = options.args;
-  var silent = options.silent;
   var count = options.count || os.cpus().length;
   var refork = options.refork !== false;
   var limit = options.limit || 60;
   var duration = options.duration || 60000; // 1 min
   var reforks = [];
 
-  if (exec) {
+  if (options.exec) {
     var opts = {
-      exec: exec
+      exec: options.exec
     };
 
-    if (isArray(args)) {
-      opts.args = args;
+    if (options.args !== undefined) {
+      opts.args = options.args;
     }
-    if (silent === true) {
-      opts.silent = silent;
+    if (options.silent !== undefined) {
+      opts.silent = options.silent;
     }
-
     cluster.setupMaster(opts);
   }
 

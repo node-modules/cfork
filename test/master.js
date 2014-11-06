@@ -26,6 +26,9 @@ var cluster = cfork({
 .on('fork', function (worker) {
   console.warn('[%s] [worker:%d] new worker start', Date(), worker.process.pid);
 })
+.on('listening', function (worker, address) {
+  console.warn('[%s] [worker:%d] listening on %j', Date(), worker.process.pid, address.port);
+})
 .on('disconnect', function (worker) {
   console.warn('[%s] [master:%s] wroker:%s disconnect, suicide: %s, state: %s.',
     Date(), process.pid, worker.process.pid, worker.suicide, worker.state);
