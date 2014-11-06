@@ -19,6 +19,7 @@ var os = require('os');
 var util = require('util');
 
 var defer = global.setImmediate || process.nextTick;
+var isArray = Array.isArray;
 
 module.exports = fork;
 
@@ -49,11 +50,18 @@ function fork(options) {
   var reforks = [];
 
   if (exec) {
-    cluster.setupMaster({
-      exec: exec,
-      args: args,
-      silent: silent,
-    });
+    var opts = {
+      exec: exec
+    };
+
+    if (isArray(args)) {
+      opts.args = args;
+    }
+    if (silent === true) {
+      opts.silent = silent;
+    }
+
+    cluster.setupMaster(opts);
   }
 
   var disconnects = {};
