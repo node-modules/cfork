@@ -1,4 +1,10 @@
 
+1.2.3 / 2015-05-09
+==================
+
+ * test: Add iojs and node v0.12 into travis config
+ * fix: when worker has terminated before disconnect, don't fork (@JacksonTian)
+
 1.2.2 / 2014-11-06
 ==================
 
