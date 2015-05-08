@@ -85,7 +85,7 @@ process.on('uncaughtException', function (err) {
 
 (The MIT License)
 
-Copyright (c) 2014 fengmk2 <fengmk2@gmail.com> and other contributors
+Copyright (c) 2014 - 2015 node-modules and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

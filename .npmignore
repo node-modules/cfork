@@ -1,6 +1,0 @@
-test/
-coverage/
-Makefile
-.travis.yml
-.jshint*
-.gitingore

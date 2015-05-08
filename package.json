@@ -3,6 +3,9 @@
   "version": "1.2.3",
   "description": "cluster fork and restart easy way",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "test": "mocha --check-leaks -R spec -t 10000 test/*.test.js",
     "jshint": "jshint .",
@@ -39,6 +42,6 @@
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.github.com)",
+  "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)",
   "license": "MIT"
 }
