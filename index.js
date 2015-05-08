@@ -66,6 +66,10 @@ function fork(options) {
 
   cluster.on('disconnect', function (worker) {
     disconnectCount++;
+    if (worker.isDead && worker.isDead()) {
+      // worker has terminated before disconnect
+      return;
+    }
     disconnects[worker.process.pid] = new Date();
     if (allow()) {
       cluster.fork();
