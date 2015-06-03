@@ -135,6 +135,9 @@ function fork(options) {
    */
 
   function onerror(err) {
+    if (!err) {
+      return;
+    }
     console.error('[%s] [cfork:master:%s] master uncaughtException: %s', Date(), process.pid, err.stack);
     console.error(err);
     console.error('(total %d disconnect, %d unexpected exit)', disconnectCount, unexpectedCount);
