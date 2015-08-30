@@ -1,4 +1,9 @@
 
+1.3.1 / 2015-08-31
+==================
+
+ * fix: add options.autoCoverage to enable istanbul
+
 1.3.0 / 2015-08-30
 ==================
 
