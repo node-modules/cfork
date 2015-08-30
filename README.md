@@ -83,6 +83,7 @@ process.on('uncaughtException', function (err) {
 - **refork** : refork when worker disconnect or unexpected exit, default is `true`
 - **limit**: limit refork times within the `duration`, default is `60`
 - **duration**: default is `60000`, one minute (so, the `refork times` < `limit / duration`)
+- **autoCoverage**: auto fork with istanbul when `running_under_istanbul` env set, default is `false`
 
 ## License
 

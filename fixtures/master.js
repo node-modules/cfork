@@ -21,7 +21,8 @@ cfork({
   args: [ 1984 ],
   limit: 4,
   count: 4,
-  duration: 60000
+  duration: 60000,
+  autoCoverage: true,
 })
 .on('fork', function (worker) {
   console.warn('[%s] [worker:%d] new worker start', Date(), worker.process.pid);

@@ -31,6 +31,7 @@ module.exports = fork;
  *   - {Boolean} [silent]  whether or not to send output to parent's stdio, default is `false`
  *   - {Number} [count]    worker num, defualt is `os.cpus().length`
  *   - {Boolean} [refork]  refork when disconect and unexpected exit, default is `true`
+ *   - {Boolean} [autoCoverage] auto fork with istanbul when `running_under_istanbul` env set, default is `false`
  * @return {Cluster}
  */
 
@@ -60,7 +61,7 @@ function fork(options) {
 
     // https://github.com/gotwarlost/istanbul#multiple-process-usage
     // Multiple Process under istanbul
-    if (process.env.running_under_istanbul) {
+    if (options.autoCoverage && process.env.running_under_istanbul) {
       // use coverage for forked process
       // disabled reporting and output for child process
       // enable pid in child process coverage filename
