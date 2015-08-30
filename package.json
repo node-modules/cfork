@@ -7,24 +7,25 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha --check-leaks -R spec -t 10000 test/*.test.js",
-    "jshint": "jshint .",
+    "cover": "node --harmony node_modules/.bin/istanbul cover --include-all-sources --report none --print none node_modules/.bin/_mocha -- --check-leaks -t 15000 test/*.test.js",
+    "lint": "eslint index.js test",
+    "test": "npm run clean && npm run lint && npm run cover && istanbul report json lcov html text",
     "autod": "autod -w --prefix '~'",
     "cnpm": "npm install --registry=https://registry.npm.taobao.org",
-    "contributors": "contributors -f plain -o AUTHORS"
+    "clean": "rm -rf coverage"
   },
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
     "autod": "*",
+    "childprocess": "1",
     "contributors": "*",
-    "graceful": "~0.1.0",
-    "jshint": "*",
+    "eslint": "1",
+    "graceful": "1",
+    "istanbul": "~0.3.18",
     "mocha": "*",
-    "pedding": "~1.0.0",
-    "should": "~4.0.4",
-    "urllib": "~2.0.2"
+    "pedding": "1",
+    "should": "4",
+    "urllib": "2"
   },
   "homepage": "https://github.com/node-modules/cfork",
   "repository": {
@@ -37,10 +38,13 @@
     "email": "fengmk2@gmail.com"
   },
   "keywords": [
-    "cluster", "cluster-fork", "cfork", "restart"
+    "cluster",
+    "cluster-fork",
+    "cfork",
+    "restart"
   ],
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 0.12.0"
   },
   "author": "fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)",
   "license": "MIT"

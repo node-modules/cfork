@@ -3,6 +3,7 @@ cfork
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
+[![Test coverage][cov-image]][cov-url]
 [![Gittip][gittip-image]][gittip-url]
 [![David deps][david-image]][david-url]
 
@@ -10,6 +11,8 @@ cfork
 [npm-url]: https://npmjs.org/package/cfork
 [travis-image]: https://img.shields.io/travis/node-modules/cfork.svg?style=flat
 [travis-url]: https://travis-ci.org/node-modules/cfork
+[cov-image]: https://codecov.io/github/node-modules/cfork/coverage.svg?branch=master
+[cov-url]: https://codecov.io/github/node-modules/cfork?branch=master
 [gittip-image]: https://img.shields.io/gittip/fengmk2.svg?style=flat
 [gittip-url]: https://www.gittip.com/fengmk2/
 [david-image]: https://img.shields.io/david/node-modules/cfork.svg?style=flat

@@ -1,11 +1,11 @@
 /**!
  * cfork - index.js
  *
- * Copyright(c) fengmk2 and other contributors.
+ * Copyright(c) node-modules and other contributors.
  * MIT Licensed
  *
  * Authors:
- *   fengmk2 <fengmk2@gmail.com> (http://fengmk2.github.com)
+ *   fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)
  */
 
 'use strict';
@@ -57,6 +57,26 @@ function fork(options) {
     if (options.silent !== undefined) {
       opts.silent = options.silent;
     }
+
+    // https://github.com/gotwarlost/istanbul#multiple-process-usage
+    // Multiple Process under istanbul
+    if (process.env.running_under_istanbul) {
+      // use coverage for forked process
+      // disabled reporting and output for child process
+      // enable pid in child process coverage filename
+      var args = [
+        'cover', '--report', 'none', '--print', 'none', '--include-pid',
+        opts.exec,
+      ];
+      if (opts.args && opts.args.length > 0) {
+        args.push('--');
+        args = args.concat(opts.args);
+      }
+
+      opts.exec = './node_modules/.bin/istanbul';
+      opts.args = args;
+    }
+
     cluster.setupMaster(opts);
   }
 

@@ -1,11 +1,9 @@
 /**!
- * cfork - test/master.js
- *
- * Copyright(c) fengmk2 and other contributors.
+ * Copyright(c) node-modules and other contributors.
  * MIT Licensed
  *
  * Authors:
- *   fengmk2 <fengmk2@gmail.com> (http://fengmk2.github.com)
+ *   fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)
  */
 
 'use strict';
@@ -18,9 +16,11 @@ var path = require('path');
 var util = require('util');
 var cfork = require('../');
 
-var cluster = cfork({
+cfork({
   exec: path.join(__dirname, 'worker.js'),
-  limit: 6,
+  args: [ 1984 ],
+  limit: 4,
+  count: 4,
   duration: 60000
 })
 .on('fork', function (worker) {
@@ -28,6 +28,7 @@ var cluster = cfork({
 })
 .on('listening', function (worker, address) {
   console.warn('[%s] [worker:%d] listening on %j', Date(), worker.process.pid, address.port);
+  process.send('listening');
 })
 .on('disconnect', function (worker) {
   console.warn('[%s] [master:%s] wroker:%s disconnect, suicide: %s, state: %s.',
@@ -44,6 +45,10 @@ var cluster = cfork({
   process.send('reach refork limit');
 });
 
+process.once('SIGTERM', function () {
+  process.exit(0);
+});
+
 setTimeout(function () {
-  mockMaster.uncaughtException();
-}, 1000);
+  mock.uncaughtException;
+}, 500);
