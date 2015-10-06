@@ -25,13 +25,17 @@ describe('cfork.test.js', function () {
   var messages = [];
 
   before(function (done) {
+    var workerNum = 4;
+    var slaveNum = 1;
+    var listeningCount = 0;
     child = childprocess.fork(path.join(__dirname, '..', 'fixtures', 'master.js'));
     child.on('message', function (m) {
       messages.push(m);
-      if (m === 'listening' && done) {
-        var _done = done;
-        done = null;
-        _done();
+      if (m === 'listening') {
+        ++listeningCount;
+        if (listeningCount === (workerNum + slaveNum)) {
+          done();
+        }
       }
     });
   });
@@ -98,6 +102,29 @@ describe('cfork.test.js', function () {
     urllib.request('http://localhost:1984/error', function (err) {
       should.exist(err);
       messages.indexOf('reach refork limit').should.above(-1);
+      done();
+    });
+  });
+
+  it('should slave listen worked', function (done) {
+    urllib.request('http://localhost:1985/', function (err, body, res) {
+      should.not.exist(err);
+      body.toString().should.equal('GET /');
+      res.statusCode.should.equal(200);
+      done();
+    });
+  });
+
+  it('should mock slave error', function (done) {
+    urllib.request('http://localhost:1985/error', function (err) {
+      should.exist(err);
+      done();
+    });
+  });
+
+  it('should slave exit', function (done) {
+    urllib.request('http://localhost:1985/exit', function (err) {
+      should.exist(err);
       done();
     });
   });

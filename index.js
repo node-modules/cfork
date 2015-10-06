@@ -28,6 +28,7 @@ module.exports = fork;
  * @param {Object} [options]
  *   - {String} exec       exec file path
  *   - {Array} [args]      exec arguments
+ *   - {Array} [slaves]    slave processes
  *   - {Boolean} [silent]  whether or not to send output to parent's stdio, default is `false`
  *   - {Number} [count]    worker num, defualt is `os.cpus().length`
  *   - {Boolean} [refork]  refork when disconect and unexpected exit, default is `true`
@@ -46,6 +47,7 @@ function fork(options) {
   var limit = options.limit || 60;
   var duration = options.duration || 60000; // 1 min
   var reforks = [];
+  var newWorker;
 
   if (options.exec) {
     var opts = {
@@ -93,7 +95,8 @@ function fork(options) {
     }
     disconnects[worker.process.pid] = new Date();
     if (allow()) {
-      cluster.fork();
+      newWorker = forkWorker(worker._clusterSettings);
+      newWorker._clusterSettings = worker._clusterSettings;
     }
   });
 
@@ -105,7 +108,8 @@ function fork(options) {
     }
     unexpectedCount++;
     if (allow()) {
-      cluster.fork();
+      newWorker = forkWorker(worker._clusterSettings);
+      newWorker._clusterSettings = worker._clusterSettings;
     }
     cluster.emit('unexpectedExit', worker, code, signal);
   });
@@ -122,7 +126,20 @@ function fork(options) {
   });
 
   for (var i = 0; i < count; i++) {
-    cluster.fork();
+    newWorker = forkWorker();
+    newWorker._clusterSettings = cluster.settings;
+  }
+
+  // fork slaves after workers are forked
+  if (options.slaves) {
+    var slaves = Array.isArray(options.slaves) ? options.slaves : [options.slaves];
+    slaves.map(normalizeSlaveConfig)
+      .forEach(function(settings) {
+        if (settings) {
+          newWorker = forkWorker(settings);
+          newWorker._clusterSettings = settings;
+        }
+      });
   }
 
   return cluster;
@@ -176,5 +193,31 @@ function fork(options) {
 
     console.error('[%s] [cfork:master:%s] (total %d disconnect, %d unexpected exit) %s',
       Date(), process.pid, disconnectCount, unexpectedCount, err.stack);
+  }
+
+  /**
+   * normalize slave config
+   */
+  function normalizeSlaveConfig(opt) {
+    // exec path
+    if (typeof opt === 'string') {
+      opt = { exec: opt };
+    }
+    if (!opt.exec) {
+      return null;
+    } else {
+      return opt;
+    }
+  }
+
+  /**
+   * fork worker with certain settings
+   */
+  function forkWorker(settings) {
+    if (settings) {
+      cluster.settings = settings;
+      cluster.setupMaster();
+    }
+    return cluster.fork();
   }
 }
