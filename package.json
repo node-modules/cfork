@@ -21,10 +21,10 @@
     "contributors": "*",
     "eslint": "1",
     "graceful": "1",
-    "istanbul": "~0.3.18",
+    "istanbul": "~0.4.0",
     "mocha": "*",
     "pedding": "1",
-    "should": "4",
+    "should": "7.1.1",
     "urllib": "2"
   },
   "homepage": "https://github.com/node-modules/cfork",
