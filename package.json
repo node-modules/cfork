@@ -25,7 +25,7 @@
     "mocha": "*",
     "pedding": "1",
     "should": "4",
-    "urllib": "2"
+    "urllib": "2.5.0"
   },
   "homepage": "https://github.com/node-modules/cfork",
   "repository": {
