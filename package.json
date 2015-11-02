@@ -10,7 +10,7 @@
     "cover": "node --harmony node_modules/.bin/istanbul cover --include-all-sources --report none --print none node_modules/.bin/_mocha -- --check-leaks -t 15000 test/*.test.js",
     "lint": "eslint index.js test",
     "test": "npm run clean && npm run lint && npm run cover && istanbul report json lcov html text",
-    "autod": "autod -w --prefix '~'",
+    "autod": "autod -w --prefix '~' -t test,fixtures",
     "cnpm": "npm install --registry=https://registry.npm.taobao.org",
     "clean": "rm -rf coverage"
   },
