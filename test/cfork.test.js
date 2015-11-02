@@ -70,6 +70,34 @@ describe('cfork.test.js', function () {
     });
   });
 
+  it('should slave listen worked', function (done) {
+    urllib.request('http://localhost:1985/', function (err, body, res) {
+      should.not.exist(err);
+      body.toString().should.equal('GET /');
+      res.statusCode.should.equal(200);
+      done();
+    });
+  });
+
+  it('should slave error and refork', function (done) {
+    urllib.request('http://localhost:1985/error', function (err) {
+      should.exist(err);
+      urllib.request('http://localhost:1985/', function (err, body, res) {
+        should.not.exist(err);
+        body.toString().should.equal('GET /');
+        res.statusCode.should.equal(200);
+        done();
+      });
+    });
+  });
+
+  it('should slave exit', function (done) {
+    urllib.request('http://localhost:1985/exit', function (err) {
+      should.exist(err);
+      done();
+    });
+  });
+
   it('should make all workers down', function (done) {
     done = pedding(6, done);
     urllib.request('http://localhost:1984/error', function (err) {
@@ -102,29 +130,6 @@ describe('cfork.test.js', function () {
     urllib.request('http://localhost:1984/error', function (err) {
       should.exist(err);
       messages.indexOf('reach refork limit').should.above(-1);
-      done();
-    });
-  });
-
-  it('should slave listen worked', function (done) {
-    urllib.request('http://localhost:1985/', function (err, body, res) {
-      should.not.exist(err);
-      body.toString().should.equal('GET /');
-      res.statusCode.should.equal(200);
-      done();
-    });
-  });
-
-  it('should mock slave error', function (done) {
-    urllib.request('http://localhost:1985/error', function (err) {
-      should.exist(err);
-      done();
-    });
-  });
-
-  it('should slave exit', function (done) {
-    urllib.request('http://localhost:1985/exit', function (err) {
-      should.exist(err);
       done();
     });
   });
