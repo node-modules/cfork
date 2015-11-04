@@ -21,8 +21,8 @@
     "contributors": "*",
     "eslint": "1",
     "graceful": "1",
-    "istanbul": "~0.3.18",
-    "mocha": "*",
+    "istanbul": "^0.4.0",
+    "mocha": "2",
     "pedding": "1",
     "should": "4",
     "urllib": "2"
