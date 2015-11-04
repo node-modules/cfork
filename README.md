@@ -40,6 +40,7 @@ var util = require('util');
 
 cfork({
   exec: '/your/app/worker.js',
+  // slaves: ['/your/app/slave.js'],
   // count: require('os').cpus().length,
 })
 .on('fork', function (worker) {
@@ -78,6 +79,7 @@ process.on('uncaughtException', function (err) {
 ### Options
 
 - **exec** : exec file path
+- **slaves** : slave process config
 - **args** : exec arguments
 - **count** : fork worker nums, default is `os.cpus().length`
 - **refork** : refork when worker disconnect or unexpected exit, default is `true`
