@@ -1,4 +1,11 @@
 
+1.4.0 / 2015-11-04
+==================
+
+ * test(slave): add slave die and refork test case
+ * feat: add slave process support
+ * chore: fix `npm run autod`
+
 1.3.1 / 2015-08-31
 ==================
 
