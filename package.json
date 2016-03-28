@@ -19,7 +19,7 @@
     "autod": "*",
     "childprocess": "1",
     "contributors": "*",
-    "eslint": "1",
+    "eslint": "2.5.3",
     "graceful": "1",
     "istanbul": "^0.4.0",
     "mocha": "2",
