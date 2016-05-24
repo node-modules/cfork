@@ -16,7 +16,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "autod": "*",
+    "autod": "2.5.1",
     "childprocess": "1",
     "contributors": "*",
     "eslint": "1",
