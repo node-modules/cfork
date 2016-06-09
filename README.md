@@ -68,13 +68,13 @@ cfork({
 .on('reachReforkLimit', function () {
   // do what you want
 });
-```
 
 // if you do not listen to this event
 // cfork will listen it and output the error message to stderr
 process.on('uncaughtException', function (err) {
   // do what you want
 });
+```
 
 ### Options
 
