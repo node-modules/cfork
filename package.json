@@ -21,7 +21,7 @@
     "contributors": "*",
     "eslint": "1",
     "graceful": "1",
-    "istanbul": "^0.4.0",
+    "istanbul": "^0.4.4",
     "mocha": "2",
     "pedding": "1",
     "should": "4",
