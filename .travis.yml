@@ -6,6 +6,6 @@ node_js:
   - '4'
   - '0.12'
 script:
-  - 'npm run test'
+  - 'npm run ci'
 after_script:
   - 'npm i codecov && codecov'

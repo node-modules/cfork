@@ -44,3 +44,4 @@ process.once('SIGTERM', function () {
 setTimeout(function () {
   mock.uncaughtException;
 }, 500);
+console.log('master:%s start', process.pid);
