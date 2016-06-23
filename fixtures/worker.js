@@ -1,16 +1,4 @@
-/**!
- * Copyright(c) node-modules and other contributors.
- * MIT Licensed
- *
- * Authors:
- *   fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)
- */
-
 'use strict';
-
-/**
- * Module dependencies.
- */
 
 var http = require('http');
 var graceful = require('graceful');
@@ -20,6 +8,16 @@ var app = http.createServer(function (req, res) {
   if (req.url === '/error') {
     mock.error();
   }
+  if (req.url === '/async_error') {
+    setTimeout(function() {
+      mock.error();
+    }, 1500);
+    return;
+  }
+  if (req.url === '/hold') {
+    console.log('[worker:%s] get hold request', process.pid);
+    return;
+  }
   if (req.url === '/exit') {
     process.exit(0);
   }
@@ -28,7 +26,7 @@ var app = http.createServer(function (req, res) {
 
 graceful({
   server: app,
-  killTimeout: 500,
+  killTimeout: 2500,
 });
 
 // call cfork on work will be ignore

@@ -1,16 +1,4 @@
-/**!
- * Copyright(c) node-modules and other contributors.
- * MIT Licensed
- *
- * Authors:
- *   luckydrq<drqzju@gmail.com> (http://luckydrq.com)
- */
-
 'use strict';
-
-/**
- * Module dependencies.
- */
 
 var http = require('http');
 var graceful = require('graceful');
@@ -33,4 +21,3 @@ graceful({
 
 // call cfork on work will be ignore
 require('../')();
-

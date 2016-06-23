@@ -2,16 +2,16 @@
 
 var path = require('path');
 var util = require('util');
-var cfork = require('../');
+var cfork = require('../../');
 
 cfork({
-  exec: path.join(__dirname, 'worker.js'),
+  exec: path.join(__dirname, '../worker.js'),
   slaves: [
-    path.join(__dirname, 'slave.js')
+    path.join(__dirname, '../slave.js')
   ],
   args: [ 1984 ],
   limit: 4,
-  count: 4,
+  count: 1,
   duration: 60000,
   autoCoverage: true,
 })
