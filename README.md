@@ -61,14 +61,14 @@ cfork({
   // logger what you want
 });
 
-// if you do not listen to this event
-// cfork will listen it and output the error message to stderr
-process.on('uncaughtException', function (err) {
+// emit when reach refork times limit
+.on('reachReforkLimit', function () {
   // do what you want
 });
 
-// emit when reach refork times limit
-.on('reachReforkLimit', function () {
+// if you do not listen to this event
+// cfork will listen it and output the error message to stderr
+process.on('uncaughtException', function (err) {
   // do what you want
 });
 ```
