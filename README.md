@@ -4,7 +4,6 @@ cfork
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![Test coverage][cov-image]][cov-url]
-[![Gittip][gittip-image]][gittip-url]
 [![David deps][david-image]][david-url]
 
 [npm-image]: https://img.shields.io/npm/v/cfork.svg?style=flat
@@ -13,8 +12,6 @@ cfork
 [travis-url]: https://travis-ci.org/node-modules/cfork
 [cov-image]: https://codecov.io/github/node-modules/cfork/coverage.svg?branch=master
 [cov-url]: https://codecov.io/github/node-modules/cfork?branch=master
-[gittip-image]: https://img.shields.io/gittip/fengmk2.svg?style=flat
-[gittip-url]: https://www.gittip.com/fengmk2/
 [david-image]: https://img.shields.io/david/node-modules/cfork.svg?style=flat
 [david-url]: https://david-dm.org/node-modules/cfork
 
@@ -91,7 +88,7 @@ process.on('uncaughtException', function (err) {
 
 (The MIT License)
 
-Copyright (c) 2014 - 2015 node-modules and other contributors
+Copyright (c) 2014 - 2016 node-modules and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
