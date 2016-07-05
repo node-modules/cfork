@@ -17,7 +17,7 @@
   "devDependencies": {
     "childprocess": "1",
     "contributors": "*",
-    "eslint": "1",
+    "eslint": "1.10.2",
     "graceful": "1",
     "istanbul": "^0.4.0",
     "mocha": "2",
