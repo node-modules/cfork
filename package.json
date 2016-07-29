@@ -22,7 +22,7 @@
     "istanbul": "^0.4.0",
     "mocha": "2",
     "pedding": "1",
-    "should": "4",
+    "should": "8.4.0",
     "urllib": "2"
   },
   "homepage": "https://github.com/node-modules/cfork",
