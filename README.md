@@ -18,7 +18,7 @@ cfork
 cluster fork and restart easy way.
 
 * Easy fork with worker file path
-* Handle worker restart, event it was exit unexpected.
+* Handle worker restart, even it was exit unexpected.
 * Auto error log process `uncaughtException` event
 
 ## Install
