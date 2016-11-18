@@ -14,6 +14,9 @@ cfork({
   count: 4,
   duration: 60000,
   autoCoverage: true,
+  env: {
+    CFORK_ENV_TEST: '😂',
+  },
 })
 .on('fork', function (worker) {
   console.warn('[%s] [worker:%d] new worker start', Date(), worker.process.pid);
