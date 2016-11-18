@@ -33,6 +33,7 @@ function fork(options) {
   var limit = options.limit || 60;
   var duration = options.duration || 60000; // 1 min
   var reforks = [];
+  var attachedEnv = options.env || {};
   var newWorker;
 
   if (options.exec) {
@@ -241,6 +242,6 @@ function fork(options) {
       cluster.settings = settings;
       cluster.setupMaster();
     }
-    return cluster.fork();
+    return cluster.fork(attachedEnv);
   }
 }

@@ -11,6 +11,9 @@ var app = http.createServer(function (req, res) {
   if (req.url === '/exit') {
     process.exit(0);
   }
+  if (req.url === '/env') {
+    return res.end(process.env.CFORK_ENV_TEST);
+  }
   res.end(req.method + ' ' + req.url);
 }).listen(port);
 

@@ -65,6 +65,20 @@ describe('cfork.test.js', function () {
     });
   });
 
+  it('should get correct env value', function (done) {
+    urllib.request('http://localhost:1984/env', function (err, body, resp) {
+      should.ifError(err);
+      body.toString().should.equal('😂');
+      resp.statusCode.should.equal(200);
+      urllib.request('http://localhost:1985/env', function (err, body, resp) {
+        should.ifError(err);
+        body.toString().should.equal('😂');
+        resp.statusCode.should.equal(200);
+        done();
+      });
+    });
+  });
+
   it('should slave error and refork', function (done) {
     urllib.request('http://localhost:1985/error', function (err) {
       should.exist(err);
@@ -72,7 +86,12 @@ describe('cfork.test.js', function () {
         should.not.exist(err);
         body.toString().should.equal('GET /');
         res.statusCode.should.equal(200);
-        done();
+        urllib.request('http://localhost:1985/env', function (err, body, resp) {
+          should.ifError(err);
+          body.toString().should.equal('😂');
+          resp.statusCode.should.equal(200);
+          done();
+        });
       });
     });
   });
