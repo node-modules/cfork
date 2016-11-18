@@ -83,6 +83,7 @@ process.on('uncaughtException', function (err) {
 - **limit**: limit refork times within the `duration`, default is `60`
 - **duration**: default is `60000`, one minute (so, the `refork times` < `limit / duration`)
 - **autoCoverage**: auto fork with istanbul when `running_under_istanbul` env set, default is `false`
+- **env**: attach some environment variable key-value pairs to the worker / slave process, default to an empty object.
 
 ## License
 
