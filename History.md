@@ -1,4 +1,10 @@
 
+1.6.0 / 2016-11-18
+==================
+
+  * feat: Add environment variables support for workers (#100)
+  * chore: fix eslint2 removed rules and spelling error (#90)
+
 1.5.1 / 2016-06-23
 ==================
 
