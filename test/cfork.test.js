@@ -1,18 +1,4 @@
-/**!
- * cluster-restart - test/cfork.test.js
- *
- * Copyright(c) node-modules and other contributors.
- * MIT Licensed
- *
- * Authors:
- *   fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)
- */
-
 'use strict';
-
-/**
- * Module dependencies.
- */
 
 var should = require('should');
 var pedding = require('pedding');
@@ -79,6 +65,20 @@ describe('cfork.test.js', function () {
     });
   });
 
+  it('should get correct env value', function (done) {
+    urllib.request('http://localhost:1984/env', function (err, body, resp) {
+      should.ifError(err);
+      body.toString().should.equal('😂');
+      resp.statusCode.should.equal(200);
+      urllib.request('http://localhost:1985/env', function (err, body, resp) {
+        should.ifError(err);
+        body.toString().should.equal('😂');
+        resp.statusCode.should.equal(200);
+        done();
+      });
+    });
+  });
+
   it('should slave error and refork', function (done) {
     urllib.request('http://localhost:1985/error', function (err) {
       should.exist(err);
@@ -86,7 +86,12 @@ describe('cfork.test.js', function () {
         should.not.exist(err);
         body.toString().should.equal('GET /');
         res.statusCode.should.equal(200);
-        done();
+        urllib.request('http://localhost:1985/env', function (err, body, resp) {
+          should.ifError(err);
+          body.toString().should.equal('😂');
+          resp.statusCode.should.equal(200);
+          done();
+        });
       });
     });
   });
@@ -94,6 +99,25 @@ describe('cfork.test.js', function () {
   it('should slave exit', function (done) {
     urllib.request('http://localhost:1985/exit', function (err) {
       should.exist(err);
+      done();
+    });
+  });
+
+  it('should mock worker async_error', function (done) {
+    done = pedding(2, done);
+    urllib.request('http://localhost:1984/async_error', function (err) {
+      console.error('[cfork.test.js] get /async_error error: %s', err);
+      should.exist(err);
+      err.message.should.containEql('socket hang up');
+      done();
+    });
+
+    urllib.request('http://localhost:1984/hold', {
+      timeout: 5000,
+    }, function (err) {
+      console.error('[cfork.test.js] get /hold error: %s', err);
+      should.exist(err);
+      err.message.should.containEql('timeout');
       done();
     });
   });

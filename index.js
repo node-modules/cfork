@@ -1,24 +1,11 @@
-/**!
- * cfork - index.js
- *
- * Copyright(c) node-modules and other contributors.
- * MIT Licensed
- *
- * Authors:
- *   fengmk2 <fengmk2@gmail.com> (http://fengmk2.com)
- */
-
 'use strict';
-
-/**
- * Module dependencies.
- */
 
 var cluster = require('cluster');
 var os = require('os');
 var util = require('util');
 
 var defer = global.setImmediate || process.nextTick;
+var bindEvents = false;
 
 module.exports = fork;
 
@@ -47,12 +34,17 @@ function fork(options) {
   var limit = options.limit || 60;
   var duration = options.duration || 60000; // 1 min
   var reforks = [];
+  var attachedEnv = options.env || {};
   var newWorker;
 
   if (options.exec) {
     var opts = {
       exec: options.exec
     };
+
+    if (options.execArgv !== undefined) {
+      opts.execArgv = options.execArgv;
+    }
 
     if (options.args !== undefined) {
       opts.args = options.args;
@@ -87,32 +79,56 @@ function fork(options) {
   var disconnectCount = 0;
   var unexpectedCount = 0;
 
-  cluster.on('disconnect', function (worker) {
-    disconnectCount++;
-    if (worker.isDead && worker.isDead()) {
-      // worker has terminated before disconnect
-      return;
-    }
-    disconnects[worker.process.pid] = new Date();
-    if (allow()) {
-      newWorker = forkWorker(worker._clusterSettings);
-      newWorker._clusterSettings = worker._clusterSettings;
-    }
-  });
+  if (!bindEvents) {
+    bindEvents = true;
+    cluster.on('disconnect', function (worker) {
+      disconnectCount++;
+      var isDead = worker.isDead && worker.isDead();
+      console.error('[%s] [cfork:master:%s] worker:%s disconnect (suicide: %s, state: %s, isDead: %s)',
+        Date(), process.pid, worker.process.pid, worker.suicide, worker.state, isDead);
+      if (isDead) {
+        // worker has terminated before disconnect
+        console.error('[%s] [cfork:master:%s] don\'t fork, because worker:%s exit event emit before disconnect',
+          Date(), process.pid, worker.process.pid);
+        return;
+      }
 
-  cluster.on('exit', function (worker, code, signal) {
-    if (disconnects[worker.process.pid]) {
-      delete disconnects[worker.process.pid];
-      // worker disconnect first, exit expected
-      return;
-    }
-    unexpectedCount++;
-    if (allow()) {
-      newWorker = forkWorker(worker._clusterSettings);
-      newWorker._clusterSettings = worker._clusterSettings;
-    }
-    cluster.emit('unexpectedExit', worker, code, signal);
-  });
+      disconnects[worker.process.pid] = Date();
+      if (allow(worker)) {
+        newWorker = forkWorker(worker._clusterSettings);
+        newWorker._clusterSettings = worker._clusterSettings;
+        console.error('[%s] [cfork:master:%s] new worker:%s fork (state: %s)',
+          Date(), process.pid, newWorker.process.pid, newWorker.state);
+      } else {
+        console.error('[%s] [cfork:master:%s] don\'t fork new work (refork: %s)',
+          Date(), process.pid, refork);
+      }
+    });
+
+    cluster.on('exit', function (worker, code, signal) {
+      var isExpected = !!disconnects[worker.process.pid];
+      var isDead = worker.isDead && worker.isDead();
+      console.error('[%s] [cfork:master:%s] worker:%s exit (code: %s, suicide: %s, state: %s, isDead: %s, isExpected: %s)',
+        Date(), process.pid, worker.process.pid, code, worker.suicide, worker.state, isDead, isExpected);
+      if (isExpected) {
+        delete disconnects[worker.process.pid];
+        // worker disconnect first, exit expected
+        return;
+      }
+
+      unexpectedCount++;
+      if (allow(worker)) {
+        newWorker = forkWorker(worker._clusterSettings);
+        newWorker._clusterSettings = worker._clusterSettings;
+        console.error('[%s] [cfork:master:%s] new worker:%s fork (state: %s)',
+          Date(), process.pid, newWorker.process.pid, newWorker.state);
+      } else {
+        console.error('[%s] [cfork:master:%s] don\'t fork new work (refork: %s)',
+          Date(), process.pid, refork);
+      }
+      cluster.emit('unexpectedExit', worker, code, signal);
+    });
+  }
 
   // defer to set the listeners
   // so you can listen this by your own
@@ -122,6 +138,9 @@ function fork(options) {
     }
     if (cluster.listeners('unexpectedExit').length === 0) {
       cluster.on('unexpectedExit', onUnexpected);
+    }
+    if (cluster.listeners('reachReforkLimit').length === 0) {
+      cluster.on('reachReforkLimit', onReachReforkLimit);
     }
   });
 
@@ -147,8 +166,12 @@ function fork(options) {
   /**
    * allow refork
    */
-  function allow() {
+  function allow(worker) {
     if (!refork) {
+      return false;
+    }
+
+    if (worker._refork === false) {
       return false;
     }
 
@@ -196,6 +219,15 @@ function fork(options) {
   }
 
   /**
+   * reachReforkLimit default handler
+   */
+
+  function onReachReforkLimit() {
+    console.error('[%s] [cfork:master:%s] worker died too fast (total %d disconnect, %d unexpected exit)',
+      Date(), process.pid, disconnectCount, unexpectedCount);
+  }
+
+  /**
    * normalize slave config
    */
   function normalizeSlaveConfig(opt) {
@@ -218,6 +250,6 @@ function fork(options) {
       cluster.settings = settings;
       cluster.setupMaster();
     }
-    return cluster.fork();
+    return cluster.fork(attachedEnv);
   }
 }

@@ -2,26 +2,24 @@
 
 var path = require('path');
 var util = require('util');
+var cluster = require('cluster');
 var cfork = require('../');
+var worker = path.join(__dirname, 'worker.js');
+var slave = path.join(__dirname, 'slave.js');
 
-cfork({
-  exec: path.join(__dirname, 'worker.js'),
-  slaves: [
-    path.join(__dirname, 'slave.js')
-  ],
-  args: [ 1984 ],
-  limit: 4,
-  count: 4,
-  duration: 60000,
-  autoCoverage: true,
-  env: {
-    CFORK_ENV_TEST: '😂',
-  },
-})
-.on('fork', function (worker) {
+cluster.on('fork', function (worker) {
   console.warn('[%s] [worker:%d] new worker start', Date(), worker.process.pid);
 })
 .on('listening', function (worker, address) {
+  if (address.port === 1990) {
+    process.once('message', function(message) {
+      if(message === 'kill_slave') {
+        worker._refork = false;
+        worker.send('kill_slave');
+      }
+    });
+  }
+  worker.port = address.port;
   console.warn('[%s] [worker:%d] listening on %j', Date(), worker.process.pid, address.port);
   process.send('listening');
 })
@@ -35,16 +33,52 @@ cfork({
     worker.process.pid, exitCode, signal, worker.suicide, worker.state));
   err.name = 'WorkerDiedError';
   console.error('[%s] [master:%s] worker exit: %s', Date(), process.pid, err.stack);
+
+  if (worker.port === 1990) {
+    process.send('slave_die');
+  }
 })
 .on('reachReforkLimit', function () {
   process.send('reach refork limit');
+});
+
+cfork({
+  exec: worker,
+  args: [ 1988 ],
+  count: 1,
+  autoCoverage: true,
+  env: {
+    CFORK_ENV_TEST: '😂',
+  },
+});
+
+cfork({
+  exec: slave,
+  args: [ 1989 ],
+  count: 1,
+  autoCoverage: true,
+  env: {
+    CFORK_ENV_TEST: '😂',
+  },
+});
+
+cfork({
+  exec: slave,
+  args: [ 1990 ],
+  count: 1,
+  autoCoverage: true,
+  env: {
+    CFORK_ENV_TEST: '😂',
+  },
 });
 
 process.once('SIGTERM', function () {
   process.exit(0);
 });
 
-setTimeout(function () {
-  mock.uncaughtException;
-}, 500);
+process.once('SIGTERM', function () {
+  process.exit(0);
+});
+
+
 console.log('master:%s start', process.pid);
