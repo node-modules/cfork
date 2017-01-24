@@ -40,6 +40,10 @@ function fork(options) {
     var opts = {
       exec: options.exec
     };
+    
+    if (options.execArgv !== undefined) {
+      opts.execArgv = options.execArgv;
+    }
 
     if (options.execArgv !== undefined) {
       opts.execArgv = options.execArgv;
