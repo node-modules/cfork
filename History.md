@@ -1,4 +1,21 @@
 
+1.6.0 / 2016-11-18
+==================
+
+  * feat: Add environment variables support for workers (#100)
+  * chore: fix eslint2 removed rules and spelling error (#90)
+
+1.5.1 / 2016-06-23
+==================
+
+  * fix: add more debug log (#74)
+
+1.5.0 / 2016-05-06
+==================
+
+  * feat: add execArgv support
+  * test: add 5, 4 node
+
 1.4.0 / 2015-11-04
 ==================
 

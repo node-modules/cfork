@@ -1,13 +1,11 @@
 sudo: false
 language: node_js
 node_js:
-  - '5'
+  - '7'
+  - '6'
   - '4'
-  - '3'
-  - '2'
-  - '1'
   - '0.12'
 script:
-  - 'npm run test'
+  - 'npm run ci'
 after_script:
-  - 'npm i codecov.io && cat ./coverage/coverage-final.json | ./node_modules/codecov.io/bin/codecov.io.js'
+  - 'npm i codecov && codecov'
