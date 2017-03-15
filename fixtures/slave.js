@@ -2,7 +2,7 @@
 
 var http = require('http');
 var graceful = require('graceful');
-var port = 1985;
+var port = Number(process.argv[2] || 1985);
 
 var app = http.createServer(function (req, res) {
   if (req.url === '/error') {
@@ -24,3 +24,10 @@ graceful({
 
 // call cfork on work will be ignore
 require('../')();
+
+
+process.on('message', function(message) {
+  if (message === 'kill_slave') {
+    process.exit(0);
+  }
+});
