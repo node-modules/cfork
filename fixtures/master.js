@@ -26,13 +26,15 @@ cfork({
   process.send('listening');
 })
 .on('disconnect', function (worker) {
-  console.warn('[%s] [master:%s] worker:%s disconnect, suicide: %s, state: %s.',
-    Date(), process.pid, worker.process.pid, worker.suicide, worker.state);
+  var propertyName = worker.hasOwnProperty('exitedAfterDisconnect') ? 'exitedAfterDisconnect' : 'suicide';
+  console.warn('[%s] [master:%s] worker:%s disconnect, %s: %s, state: %s.',
+    Date(), process.pid, worker.process.pid, propertyName, worker[propertyName], worker.state);
 })
 .on('exit', function (worker, code, signal) {
   var exitCode = worker.process.exitCode;
-  var err = new Error(util.format('worker %s died (code: %s, signal: %s, suicide: %s, state: %s)',
-    worker.process.pid, exitCode, signal, worker.suicide, worker.state));
+  var propertyName = worker.hasOwnProperty('exitedAfterDisconnect') ? 'exitedAfterDisconnect' : 'suicide';
+  var err = new Error(util.format('worker %s died (code: %s, signal: %s, %s: %s, state: %s)',
+    worker.process.pid, exitCode, signal, propertyName, worker[propertyName], worker.state));
   err.name = 'WorkerDiedError';
   console.error('[%s] [master:%s] worker exit: %s', Date(), process.pid, err.stack);
 })

@@ -81,8 +81,10 @@ function fork(options) {
   cluster.on('disconnect', function (worker) {
     disconnectCount++;
     var isDead = worker.isDead && worker.isDead();
-    console.error('[%s] [cfork:master:%s] worker:%s disconnect (suicide: %s, state: %s, isDead: %s)',
-      Date(), process.pid, worker.process.pid, worker.suicide, worker.state, isDead);
+    var propertyName = worker.hasOwnProperty('exitedAfterDisconnect') ? 'exitedAfterDisconnect' : 'suicide';
+    console.error('[%s] [cfork:master:%s] worker:%s disconnect (%s: %s, state: %s, isDead: %s)',
+      Date(), process.pid, worker.process.pid, propertyName, worker[propertyName],
+      worker.state, isDead);
     if (isDead) {
       // worker has terminated before disconnect
       console.error('[%s] [cfork:master:%s] don\'t fork, because worker:%s exit event emit before disconnect',
@@ -105,8 +107,10 @@ function fork(options) {
   cluster.on('exit', function (worker, code, signal) {
     var isExpected = !!disconnects[worker.process.pid];
     var isDead = worker.isDead && worker.isDead();
-    console.error('[%s] [cfork:master:%s] worker:%s exit (code: %s, suicide: %s, state: %s, isDead: %s, isExpected: %s)',
-      Date(), process.pid, worker.process.pid, code, worker.suicide, worker.state, isDead, isExpected);
+    var propertyName = worker.hasOwnProperty('exitedAfterDisconnect') ? 'exitedAfterDisconnect' : 'suicide';
+    console.error('[%s] [cfork:master:%s] worker:%s exit (code: %s, %s: %s, state: %s, isDead: %s, isExpected: %s)',
+      Date(), process.pid, worker.process.pid, code, propertyName, worker[propertyName],
+      worker.state, isDead, isExpected);
     if (isExpected) {
       delete disconnects[worker.process.pid];
       // worker disconnect first, exit expected
@@ -202,8 +206,9 @@ function fork(options) {
 
   function onUnexpected(worker, code, signal) {
     var exitCode = worker.process.exitCode;
-    var err = new Error(util.format('worker:%s died unexpected (code: %s, signal: %s, suicide: %s, state: %s)',
-      worker.process.pid, exitCode, signal, worker.suicide, worker.state));
+    var propertyName = worker.hasOwnProperty('exitedAfterDisconnect') ? 'exitedAfterDisconnect' : 'suicide';
+    var err = new Error(util.format('worker:%s died unexpected (code: %s, signal: %s, %s: %s, state: %s)',
+      worker.process.pid, exitCode, signal, propertyName, worker[propertyName], worker.state));
     err.name = 'WorkerDiedUnexpectedError';
 
     console.error('[%s] [cfork:master:%s] (total %d disconnect, %d unexpected exit) %s',
