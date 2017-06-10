@@ -38,43 +38,43 @@ $ npm install cfork --save
 ### Example
 
 ```js
-var cfork = require('cfork');
-var util = require('util');
+const cfork = require('cfork');
+const util = require('util');
 
 cfork({
   exec: '/your/app/worker.js',
   // slaves: ['/your/app/slave.js'],
   // count: require('os').cpus().length,
 })
-.on('fork', function (worker) {
+.on('fork', worker => {
   console.warn('[%s] [worker:%d] new worker start', Date(), worker.process.pid);
 })
-.on('disconnect', function (worker) {
-  console.warn('[%s] [master:%s] wroker:%s disconnect, suicide: %s, state: %s.',
-    Date(), process.pid, worker.process.pid, worker.suicide, worker.state);
+.on('disconnect', worker => {
+  console.warn('[%s] [master:%s] wroker:%s disconnect, exitedAfterDisconnect: %s, state: %s.',
+    Date(), process.pid, worker.process.pid, worker.exitedAfterDisconnect, worker.state);
 })
-.on('exit', function (worker, code, signal) {
-  var exitCode = worker.process.exitCode;
-  var err = new Error(util.format('worker %s died (code: %s, signal: %s, suicide: %s, state: %s)',
-    worker.process.pid, exitCode, signal, worker.suicide, worker.state));
+.on('exit', (worker, code, signal) => {
+  const exitCode = worker.process.exitCode;
+  const err = new Error(util.format('worker %s died (code: %s, signal: %s, exitedAfterDisconnect: %s, state: %s)',
+    worker.process.pid, exitCode, signal, worker.exitedAfterDisconnect, worker.state));
   err.name = 'WorkerDiedError';
   console.error('[%s] [master:%s] wroker exit: %s', Date(), process.pid, err.stack);
 })
 
 // if you do not listen to this event
 // cfork will output this message to stderr
-.on('unexpectedExit', function (worker, code, signal) {
+.on('unexpectedExit', (worker, code, signal) => {
   // logger what you want
 });
 
 // emit when reach refork times limit
-.on('reachReforkLimit', function () {
+.on('reachReforkLimit', () => {
   // do what you want
 });
 
 // if you do not listen to this event
 // cfork will listen it and output the error message to stderr
-process.on('uncaughtException', function (err) {
+process.on('uncaughtException', err => {
   // do what you want
 });
 ```
@@ -93,9 +93,10 @@ process.on('uncaughtException', function (err) {
 
 ## License
 
+```
 (The MIT License)
 
-Copyright (c) 2014 - 2016 node-modules and other contributors
+Copyright (c) 2014 - 2017 node-modules and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -115,3 +116,4 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
