@@ -1,4 +1,10 @@
 
+1.6.1 / 2017-06-11
+==================
+
+  * fix:  try to use exitedAfterDisconnect first (#109)
+  * chore: update badge
+
 1.6.0 / 2016-11-18
 ==================
 

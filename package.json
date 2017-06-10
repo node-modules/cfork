@@ -1,6 +1,6 @@
 {
   "name": "cfork",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "cluster fork and restart easy way",
   "main": "index.js",
   "files": [
