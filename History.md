@@ -1,4 +1,10 @@
 
+1.7.0 / 2017-09-25
+==================
+
+**features**
+  * [[`9fb55a1`](http://github.com/node-modules/cfork/commit/9fb55a10f62b1da6fd7da9ac59178dd0e3a32d67)] - feat: allow master disable worker refork (#110) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.6.1 / 2017-06-11
 ==================
 
