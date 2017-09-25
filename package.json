@@ -13,7 +13,9 @@
     "clean": "rm -rf coverage",
     "ci": "mocha -t 15000 test/*.test.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "utility": "^1.12.0"
+  },
   "devDependencies": {
     "childprocess": "1",
     "contributors": "*",
