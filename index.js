@@ -83,7 +83,7 @@ function fork(options) {
     disconnectCount++;
     var isDead = worker.isDead && worker.isDead();
     var propertyName = worker.hasOwnProperty('exitedAfterDisconnect') ? 'exitedAfterDisconnect' : 'suicide';
-    console.error('[%s] [cfork:master:%s] worker:%s disconnect (%s: %s, state: %s, isDead: %s, worker.disableRefork: %s)',
+    console.info('[%s] [cfork:master:%s] worker:%s disconnect (%s: %s, state: %s, isDead: %s, worker.disableRefork: %s)',
       utility.logDate(), process.pid, worker.process.pid, propertyName, worker[propertyName],
       worker.state, isDead, worker.disableRefork);
     if (isDead) {
@@ -94,7 +94,7 @@ function fork(options) {
     }
     if (worker.disableRefork) {
       // worker has terminated by master, like egg-cluster master will set disableRefork to true
-      console.error('[%s] [cfork:master:%s] don\'t fork, because worker:%s will be kill soon',
+      console.info('[%s] [cfork:master:%s] don\'t fork, because worker:%s will be kill soon',
         utility.logDate(), process.pid, worker.process.pid);
       return;
     }
@@ -103,10 +103,10 @@ function fork(options) {
     if (allow()) {
       newWorker = forkWorker(worker._clusterSettings);
       newWorker._clusterSettings = worker._clusterSettings;
-      console.error('[%s] [cfork:master:%s] new worker:%s fork (state: %s)',
+      console.info('[%s] [cfork:master:%s] new worker:%s fork (state: %s)',
         utility.logDate(), process.pid, newWorker.process.pid, newWorker.state);
     } else {
-      console.error('[%s] [cfork:master:%s] don\'t fork new work (refork: %s)',
+      console.info('[%s] [cfork:master:%s] don\'t fork new work (refork: %s)',
         utility.logDate(), process.pid, refork);
     }
   });
@@ -115,7 +115,7 @@ function fork(options) {
     var isExpected = !!disconnects[worker.process.pid];
     var isDead = worker.isDead && worker.isDead();
     var propertyName = worker.hasOwnProperty('exitedAfterDisconnect') ? 'exitedAfterDisconnect' : 'suicide';
-    console.error('[%s] [cfork:master:%s] worker:%s exit (code: %s, %s: %s, state: %s, isDead: %s, isExpected: %s, worker.disableRefork: %s)',
+    console.info('[%s] [cfork:master:%s] worker:%s exit (code: %s, %s: %s, state: %s, isDead: %s, isExpected: %s, worker.disableRefork: %s)',
       utility.logDate(), process.pid, worker.process.pid, code, propertyName, worker[propertyName],
       worker.state, isDead, isExpected, worker.disableRefork);
     if (isExpected) {
@@ -132,10 +132,10 @@ function fork(options) {
     if (allow()) {
       newWorker = forkWorker(worker._clusterSettings);
       newWorker._clusterSettings = worker._clusterSettings;
-      console.error('[%s] [cfork:master:%s] new worker:%s fork (state: %s)',
+      console.info('[%s] [cfork:master:%s] new worker:%s fork (state: %s)',
         utility.logDate(), process.pid, newWorker.process.pid, newWorker.state);
     } else {
-      console.error('[%s] [cfork:master:%s] don\'t fork new work (refork: %s)',
+      console.info('[%s] [cfork:master:%s] don\'t fork new work (refork: %s)',
         utility.logDate(), process.pid, refork);
     }
     cluster.emit('unexpectedExit', worker, code, signal);
