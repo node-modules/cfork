@@ -1,4 +1,10 @@
 
+1.7.1 / 2017-11-07
+==================
+
+**fixes**
+  * [[`3759155`](http://github.com/node-modules/cfork/commit/3759155234876d740d60d838e2583ca0d74aa7e3)] - fix: log should be info rather than error (#111) (Haoliang Gao <<sakura9515@gmail.com>>)
+
 1.7.0 / 2017-09-25
 ==================
 
