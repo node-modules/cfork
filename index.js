@@ -52,8 +52,8 @@ function fork(options) {
     if (options.silent !== undefined) {
       opts.silent = options.silent;
     }
-    if (options.windowsHide !== undefined) {
-      opts.windowsHide = options.windowsHide;
+    if (process.platform === 'win32') {
+      opts.windowsHide = true;
     }
 
 
