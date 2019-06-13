@@ -52,6 +52,10 @@ function fork(options) {
     if (options.silent !== undefined) {
       opts.silent = options.silent;
     }
+    if (options.windowsHide !== undefined) {
+      opts.windowsHide = options.windowsHide;
+    }
+
 
     // https://github.com/gotwarlost/istanbul#multiple-process-usage
     // Multiple Process under istanbul
