@@ -1,4 +1,13 @@
 
+1.8.0 / 2019-06-13
+==================
+
+**features**
+  * [[`769a682`](http://github.com/node-modules/cfork/commit/769a6820dc62768ccbc66696e489c0661cd5acdb)] - feat: add cluster windowsHide support (#113) (QingDeng <<zrl412@163.com>>)
+
+**others**
+  * [[`178c391`](http://github.com/node-modules/cfork/commit/178c39195066fcf0698602b5b603026e9b9c5005)] - docs: add windowsHide (dead-horse <<dead_horse@qq.com>>)
+
 1.7.1 / 2017-11-07
 ==================
 
