@@ -20,6 +20,7 @@ module.exports = fork;
  *   - {Number} [count]    worker num, defualt is `os.cpus().length`
  *   - {Boolean} [refork]  refork when disconect and unexpected exit, default is `true`
  *   - {Boolean} [autoCoverage] auto fork with istanbul when `running_under_istanbul` env set, default is `false`
+ *   - {Boolean} [windowsHide] Hide the forked processes console window that would normally be created on Windows systems. Default: false.
  * @return {Cluster}
  */
 

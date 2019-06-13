@@ -90,6 +90,7 @@ process.on('uncaughtException', err => {
 - **duration**: default is `60000`, one minute (so, the `refork times` < `limit / duration`)
 - **autoCoverage**: auto fork with istanbul when `running_under_istanbul` env set, default is `false`
 - **env**: attach some environment variable key-value pairs to the worker / slave process, default to an empty object.
+- **windowsHide**: Hide the forked processes console window that would normally be created on Windows systems, default to false.
 
 ## License
 
