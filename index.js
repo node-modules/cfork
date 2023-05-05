@@ -21,6 +21,7 @@ module.exports = fork;
  *   - {Boolean} [refork]  refork when disconect and unexpected exit, default is `true`
  *   - {Boolean} [autoCoverage] auto fork with istanbul when `running_under_istanbul` env set, default is `false`
  *   - {Boolean} [windowsHide] Hide the forked processes console window that would normally be created on Windows systems. Default: false.
+ *   - {String} [serialization] Specify the kind of serialization used for sending messages between processes. Possible values are 'json' and 'advanced'. See Advanced serialization for child_process for more details. Default: false.
  * @return {Cluster}
  */
 
@@ -55,6 +56,9 @@ function fork(options) {
     }
     if (options.windowsHide !== undefined) {
       opts.windowsHide = options.windowsHide;
+    }
+    if (options.serialization !== undefined) {
+      opts.serialization = options.serialization;
     }
 
 
