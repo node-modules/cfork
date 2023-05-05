@@ -91,6 +91,7 @@ process.on('uncaughtException', err => {
 - **autoCoverage**: auto fork with istanbul when `running_under_istanbul` env set, default is `false`
 - **env**: attach some environment variable key-value pairs to the worker / slave process, default to an empty object.
 - **windowsHide**: Hide the forked processes console window that would normally be created on Windows systems, default to false.
+- **serialization**: Specify the kind of serialization used for sending messages between processes. Possible values are 'json' and 'advanced'. See Advanced serialization for child_process for more details. Default: false.
 
 ## License
 
