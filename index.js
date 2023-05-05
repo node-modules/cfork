@@ -77,7 +77,7 @@ function fork(options) {
       opts.args = args;
     }
 
-    cluster.setupMaster(opts);
+    cluster.setupPrimary(opts);
   }
 
   var disconnects = {};
@@ -263,7 +263,7 @@ function fork(options) {
   function forkWorker(settings) {
     if (settings) {
       cluster.settings = settings;
-      cluster.setupMaster();
+      cluster.setupPrimary();
     }
     return cluster.fork(attachedEnv);
   }
