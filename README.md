@@ -4,7 +4,6 @@ cfork
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![Test coverage][codecov-image]][codecov-url]
-[![David deps][david-image]][david-url]
 [![Known Vulnerabilities][snyk-image]][snyk-url]
 [![npm download][download-image]][download-url]
 
@@ -14,8 +13,6 @@ cfork
 [travis-url]: https://travis-ci.org/node-modules/cfork
 [codecov-image]: https://codecov.io/gh/node-modules/cfork/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/node-modules/cfork
-[david-image]: https://img.shields.io/david/node-modules/cfork.svg?style=flat-square
-[david-url]: https://david-dm.org/node-modules/cfork
 [snyk-image]: https://snyk.io/test/npm/cfork/badge.svg?style=flat-square
 [snyk-url]: https://snyk.io/test/npm/cfork
 [download-image]: https://img.shields.io/npm/dm/cfork.svg?style=flat-square
@@ -119,3 +116,16 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
+
+<!-- GITCONTRIBUTOR_START -->
+
+## Contributors
+
+|[<img src="https://avatars.githubusercontent.com/u/156269?v=4" width="100px;"/><br/><sub><b>fengmk2</b></sub>](https://github.com/fengmk2)<br/>|[<img src="https://avatars.githubusercontent.com/u/14790466?v=4" width="100px;"/><br/><sub><b>greenkeeperio-bot</b></sub>](https://github.com/greenkeeperio-bot)<br/>|[<img src="https://avatars.githubusercontent.com/u/985607?v=4" width="100px;"/><br/><sub><b>dead-horse</b></sub>](https://github.com/dead-horse)<br/>|[<img src="https://avatars.githubusercontent.com/u/327019?v=4" width="100px;"/><br/><sub><b>JacksonTian</b></sub>](https://github.com/JacksonTian)<br/>|[<img src="https://avatars.githubusercontent.com/u/1474688?v=4" width="100px;"/><br/><sub><b>luckydrq</b></sub>](https://github.com/luckydrq)<br/>|[<img src="https://avatars.githubusercontent.com/u/2842176?v=4" width="100px;"/><br/><sub><b>XadillaX</b></sub>](https://github.com/XadillaX)<br/>|
+| :---: | :---: | :---: | :---: | :---: | :---: |
+|[<img src="https://avatars.githubusercontent.com/u/360661?v=4" width="100px;"/><br/><sub><b>popomore</b></sub>](https://github.com/popomore)<br/>|[<img src="https://avatars.githubusercontent.com/u/18315?v=4" width="100px;"/><br/><sub><b>hemanth</b></sub>](https://github.com/hemanth)<br/>|[<img src="https://avatars.githubusercontent.com/u/3230673?v=4" width="100px;"/><br/><sub><b>qingdengyue</b></sub>](https://github.com/qingdengyue)<br/>|[<img src="https://avatars.githubusercontent.com/u/1422472?v=4" width="100px;"/><br/><sub><b>jpuncle</b></sub>](https://github.com/jpuncle)<br/>|[<img src="https://avatars.githubusercontent.com/u/1102038?v=4" width="100px;"/><br/><sub><b>hustxiaoc</b></sub>](https://github.com/hustxiaoc)<br/>|[<img src="https://avatars.githubusercontent.com/u/2972143?v=4" width="100px;"/><br/><sub><b>nightink</b></sub>](https://github.com/nightink)<br/>|
+[<img src="https://avatars.githubusercontent.com/u/7971415?v=4" width="100px;"/><br/><sub><b>paranoidjk</b></sub>](https://github.com/paranoidjk)<br/>|[<img src="https://avatars.githubusercontent.com/u/19849579?v=4" width="100px;"/><br/><sub><b>sinkhaha</b></sub>](https://github.com/sinkhaha)<br/>
+
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Sat May 06 2023 00:30:47 GMT+0800`.
+
+<!-- GITCONTRIBUTOR_END -->

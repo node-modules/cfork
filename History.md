@@ -1,4 +1,10 @@
 
+1.9.0 / 2023-05-06
+==================
+
+**features**
+  * [[`def03e1`](http://github.com/node-modules/cfork/commit/def03e17f3d057f8fdf658d4b99603f22abe95f0)] - feat: support serialization options (#115) (sinkhaha <<1468709106@qq.com>>)
+
 1.8.0 / 2019-06-13
 ==================
 
