@@ -81,7 +81,7 @@ function fork(options) {
       opts.args = args;
     }
 
-    cluster.setupPrimary(opts);
+    setupPrimary(opts);
   }
 
   var disconnects = {};
@@ -267,8 +267,21 @@ function fork(options) {
   function forkWorker(settings) {
     if (settings) {
       cluster.settings = settings;
-      cluster.setupPrimary();
+      setupPrimary();
     }
     return cluster.fork(attachedEnv);
+  }
+
+  /**
+   * used to change the default 'fork' behavior
+   * cluster.setupMaster() is deprecated since v16.0.0，and cluster.setupPrimary() added in v16.0.0
+   */
+  function setupPrimary(opts) {
+    opts = opts || {};
+    if (typeof cluster.setupPrimary === 'function') {
+      cluster.setupPrimary(opts);
+    } else {
+      cluster.setupMaster(opts);
+    }
   }
 }
