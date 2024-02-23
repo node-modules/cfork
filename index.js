@@ -169,7 +169,7 @@ function fork(options) {
   });
 
   for (var i = 0; i < count; i++) {
-    const env = { CFORK_WORKER_INDEX: String(i), CFORK_WORKER_COUNT: count };
+    const env = { CFORK_WORKER_INDEX: String(i), CFORK_WORKER_COUNT: String(count) };
     newWorker = forkWorker(null, env);
     newWorker._clusterSettings = cluster.settings;
     newWorker._clusterWorkerEnv = env;
@@ -181,7 +181,7 @@ function fork(options) {
     slaves.map(normalizeSlaveConfig)
       .forEach(function(settings, index) {
         if (settings) {
-          const env = { CFORK_SLAVE_WORKER_INDEX: String(index), CFORK_SLAVE_WORKER_COUNT: slaves.length };
+          const env = { CFORK_SLAVE_WORKER_INDEX: String(index), CFORK_SLAVE_WORKER_COUNT: String(slaves.length) };
           newWorker = forkWorker(settings, env);
           newWorker._clusterSettings = settings;
           newWorker._clusterWorkerEnv = env;
