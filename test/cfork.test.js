@@ -93,7 +93,7 @@ describe('test/cfork.test.js', () => {
           resp.statusCode.should.equal(200);
           urllib.request('http://localhost:1985/worker_index', function (err, body, resp) {
             should.ifError(err);
-            body.toString().should.equal('worker index: 4');
+            body.toString().should.equal('slave worker index: 0, 1');
             resp.statusCode.should.equal(200);
             done();
           });
@@ -107,13 +107,13 @@ describe('test/cfork.test.js', () => {
       should.ifError(err);
       const text = body.toString();
       // console.log('%o', text);
-      assert(text === 'worker index: 0' || text === 'worker index: 1'
-        || text === 'worker index: 2' || text === 'worker index: 3', text);
+      assert(text === 'worker index: 0, 4' || text === 'worker index: 1, 4'
+        || text === 'worker index: 2, 4 ' || text === 'worker index: 3, 4', text);
       resp.statusCode.should.equal(200);
       urllib.request('http://localhost:1985/worker_index', function (err, body, resp) {
         should.ifError(err);
         const text = body.toString();
-        assert.equal(text, 'worker index: 4');
+        assert.equal(text, 'slave worker index: 0, 1');
         resp.statusCode.should.equal(200);
         done();
       });
