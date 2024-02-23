@@ -108,7 +108,7 @@ describe('test/cfork.test.js', () => {
       const text = body.toString();
       // console.log('%o', text);
       assert(text === 'worker index: 0, 4' || text === 'worker index: 1, 4'
-        || text === 'worker index: 2, 4 ' || text === 'worker index: 3, 4', text);
+        || text === 'worker index: 2, 4' || text === 'worker index: 3, 4', text);
       resp.statusCode.should.equal(200);
       urllib.request('http://localhost:1985/worker_index', function (err, body, resp) {
         should.ifError(err);
@@ -132,7 +132,12 @@ describe('test/cfork.test.js', () => {
     urllib.request('http://localhost:1984/async_error', function (err) {
       console.error('[cfork.test.js] get /async_error error: %s', err);
       should.exist(err);
-      err.message.should.containEql('socket hang up');
+      // ECONNRESET on windows
+      if (process.platform === 'win32') {
+        err.message.should.containEql('ECONNRESET');
+      } else {
+        err.message.should.containEql('socket hang up');
+      }
       done();
     });
 
