@@ -1,3 +1,11 @@
+# Changelog
+
+## [1.10.0](https://github.com/node-modules/cfork/compare/v1.9.0...v1.10.0) (2024-02-23)
+
+
+### Features
+
+* set CFORK_WORKER_INDEX env let worker know it's fork index ([#116](https://github.com/node-modules/cfork/issues/116)) ([f69992c](https://github.com/node-modules/cfork/commit/f69992c26723a8c2fc139fa496a8b0a3bc6fe497))
 
 1.9.0 / 2023-05-06
 ==================
