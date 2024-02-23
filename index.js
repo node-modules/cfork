@@ -111,8 +111,9 @@ function fork(options) {
 
     disconnects[worker.process.pid] = utility.logDate();
     if (allow()) {
-      newWorker = forkWorker(worker._clusterSettings);
+      newWorker = forkWorker(worker._clusterSettings, worker._clusterWorkerEnv);
       newWorker._clusterSettings = worker._clusterSettings;
+      newWorker._clusterWorkerEnv = worker._clusterWorkerEnv;
       log('[%s] [cfork:master:%s] new worker:%s fork (state: %s)',
         utility.logDate(), process.pid, newWorker.process.pid, newWorker.state);
     } else {
@@ -141,8 +142,9 @@ function fork(options) {
 
     unexpectedCount++;
     if (allow()) {
-      newWorker = forkWorker(worker._clusterSettings);
+      newWorker = forkWorker(worker._clusterSettings, worker._clusterWorkerEnv);
       newWorker._clusterSettings = worker._clusterSettings;
+      newWorker._clusterWorkerEnv = worker._clusterWorkerEnv;
       log('[%s] [cfork:master:%s] new worker:%s fork (state: %s)',
         utility.logDate(), process.pid, newWorker.process.pid, newWorker.state);
     } else {
@@ -167,18 +169,22 @@ function fork(options) {
   });
 
   for (var i = 0; i < count; i++) {
-    newWorker = forkWorker();
+    const env = { CFORK_WORKER_INDEX: String(i) };
+    newWorker = forkWorker(null, env);
     newWorker._clusterSettings = cluster.settings;
+    newWorker._clusterWorkerEnv = env;
   }
 
   // fork slaves after workers are forked
   if (options.slaves) {
     var slaves = Array.isArray(options.slaves) ? options.slaves : [options.slaves];
     slaves.map(normalizeSlaveConfig)
-      .forEach(function(settings) {
+      .forEach(function(settings, index) {
         if (settings) {
-          newWorker = forkWorker(settings);
+          const env = { CFORK_WORKER_INDEX: String(count + index) };
+          newWorker = forkWorker(settings, env);
           newWorker._clusterSettings = settings;
+          newWorker._clusterWorkerEnv = env;
         }
       });
   }
@@ -264,12 +270,12 @@ function fork(options) {
   /**
    * fork worker with certain settings
    */
-  function forkWorker(settings) {
+  function forkWorker(settings, workerEnv) {
     if (settings) {
       cluster.settings = settings;
       setupPrimary();
     }
-    return cluster.fork(attachedEnv);
+    return cluster.fork(Object.assign({}, attachedEnv, workerEnv));
   }
 
   /**
