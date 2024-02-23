@@ -1,12 +1,13 @@
 'use strict';
 
+var assert = require('assert');
 var should = require('should');
 var pedding = require('pedding');
 var urllib = require('urllib');
 var childprocess = require('childprocess');
 var path = require('path');
 
-describe('cfork.test.js', function () {
+describe('test/cfork.test.js', () => {
   var child;
   var messages = [];
 
@@ -90,8 +91,31 @@ describe('cfork.test.js', function () {
           should.ifError(err);
           body.toString().should.equal('😂');
           resp.statusCode.should.equal(200);
-          done();
+          urllib.request('http://localhost:1985/worker_index', function (err, body, resp) {
+            should.ifError(err);
+            body.toString().should.equal('slave worker index: 0, 1');
+            resp.statusCode.should.equal(200);
+            done();
+          });
         });
+      });
+    });
+  });
+
+  it('should get CFORK_WORKER_INDEX env value', function (done) {
+    urllib.request('http://localhost:1984/worker_index', function (err, body, resp) {
+      should.ifError(err);
+      const text = body.toString();
+      // console.log('%o', text);
+      assert(text === 'worker index: 0, 4' || text === 'worker index: 1, 4'
+        || text === 'worker index: 2, 4' || text === 'worker index: 3, 4', text);
+      resp.statusCode.should.equal(200);
+      urllib.request('http://localhost:1985/worker_index', function (err, body, resp) {
+        should.ifError(err);
+        const text = body.toString();
+        assert.equal(text, 'slave worker index: 0, 1');
+        resp.statusCode.should.equal(200);
+        done();
       });
     });
   });
@@ -108,7 +132,12 @@ describe('cfork.test.js', function () {
     urllib.request('http://localhost:1984/async_error', function (err) {
       console.error('[cfork.test.js] get /async_error error: %s', err);
       should.exist(err);
-      err.message.should.containEql('socket hang up');
+      // ECONNRESET on windows
+      if (process.platform === 'win32') {
+        err.message.should.containEql('ECONNRESET');
+      } else {
+        err.message.should.containEql('socket hang up');
+      }
       done();
     });
 
@@ -117,7 +146,12 @@ describe('cfork.test.js', function () {
     }, function (err) {
       console.error('[cfork.test.js] get /hold error: %s', err);
       should.exist(err);
-      err.message.should.containEql('timeout');
+      // ECONNRESET on windows
+      if (process.platform === 'win32') {
+        err.message.should.containEql('ECONNRESET');
+      } else {
+        err.message.should.containEql('timeout');
+      }
       done();
     });
   });

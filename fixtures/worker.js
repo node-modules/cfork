@@ -24,6 +24,9 @@ var app = http.createServer(function (req, res) {
   if (req.url === '/env') {
     return res.end(process.env.CFORK_ENV_TEST);
   }
+  if (req.url === '/worker_index') {
+    return res.end(`worker index: ${process.env.CFORK_WORKER_INDEX}, ${process.env.CFORK_WORKER_COUNT}`);
+  }
   res.end(req.method + ' ' + req.url);
 }).listen(port);
 
