@@ -141,7 +141,12 @@ describe('test/cfork.test.js', () => {
     }, function (err) {
       console.error('[cfork.test.js] get /hold error: %s', err);
       should.exist(err);
-      err.message.should.containEql('timeout');
+      // ECONNRESET on windows
+      if (process.platform === 'win32') {
+        err.message.should.containEql('ECONNRESET');
+      } else {
+        err.message.should.containEql('timeout');
+      }
       done();
     });
   });

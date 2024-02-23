@@ -38,7 +38,12 @@ describe('one_worker_cluster.test.js', function() {
     urllib.request('http://localhost:1984/async_error', function(err) {
       console.error('[cfork.test.js] get /async_error error: %s', err);
       should.exist(err);
-      err.message.should.containEql('socket hang up');
+      // ECONNRESET on windows
+      if (process.platform === 'win32') {
+        err.message.should.containEql('ECONNRESET');
+      } else {
+        err.message.should.containEql('socket hang up');
+      }
       done();
     });
 
@@ -48,7 +53,12 @@ describe('one_worker_cluster.test.js', function() {
     }, function (err) {
       console.error('[cfork.test.js] get /hold error: %s', err);
       should.exist(err);
-      err.message.should.containEql('socket hang up');
+      // ECONNRESET on windows
+      if (process.platform === 'win32') {
+        err.message.should.containEql('ECONNRESET');
+      } else {
+        err.message.should.containEql('socket hang up');
+      }
       done();
     });
   });
