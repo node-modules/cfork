@@ -52,7 +52,7 @@ http.createServer(function (req, res) {
   var count = 0;
   for (var id in cluster.workers) {
     var worker = cluster.workers[id];
-    worker.disableRefork = true;
+    cfork.setDisableRefork(worker, true);
     worker.process.kill('SIGTERM');
     count++;
   }

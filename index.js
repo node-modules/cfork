@@ -9,6 +9,8 @@ var defer = global.setImmediate || process.nextTick;
 
 module.exports = fork;
 
+fork.setDisableRefork = setDisableRefork;
+
 /**
  * cluster fork
  *
@@ -89,20 +91,21 @@ function fork(options) {
   var unexpectedCount = 0;
 
   cluster.on('disconnect', function (worker) {
-    var log = console[worker.disableRefork ? 'info' : 'error'];
+    var disableRefork = getDisableRefork(worker);
+    var log = console[ disableRefork ? 'info' : 'error'];
     disconnectCount++;
     var isDead = worker.isDead && worker.isDead();
     var propertyName = worker.hasOwnProperty('exitedAfterDisconnect') ? 'exitedAfterDisconnect' : 'suicide';
     log('[%s] [cfork:master:%s] worker:%s disconnect (%s: %s, state: %s, isDead: %s, worker.disableRefork: %s)',
       utility.logDate(), process.pid, worker.process.pid, propertyName, worker[propertyName],
-      worker.state, isDead, worker.disableRefork);
+      worker.state, isDead, disableRefork);
     if (isDead) {
       // worker has terminated before disconnect
       log('[%s] [cfork:master:%s] don\'t fork, because worker:%s exit event emit before disconnect',
         utility.logDate(), process.pid, worker.process.pid);
       return;
     }
-    if (worker.disableRefork) {
+    if (disableRefork) {
       // worker has terminated by master, like egg-cluster master will set disableRefork to true
       log('[%s] [cfork:master:%s] don\'t fork, because worker:%s will be kill soon',
         utility.logDate(), process.pid, worker.process.pid);
@@ -123,19 +126,20 @@ function fork(options) {
   });
 
   cluster.on('exit', function (worker, code, signal) {
-    var log = console[worker.disableRefork ? 'info' : 'error'];
+    var disableRefork = getDisableRefork(worker);
+    var log = console[disableRefork ? 'info' : 'error'];
     var isExpected = !!disconnects[worker.process.pid];
     var isDead = worker.isDead && worker.isDead();
     var propertyName = worker.hasOwnProperty('exitedAfterDisconnect') ? 'exitedAfterDisconnect' : 'suicide';
     log('[%s] [cfork:master:%s] worker:%s exit (code: %s, %s: %s, state: %s, isDead: %s, isExpected: %s, worker.disableRefork: %s)',
       utility.logDate(), process.pid, worker.process.pid, code, propertyName, worker[propertyName],
-      worker.state, isDead, isExpected, worker.disableRefork);
+      worker.state, isDead, isExpected, disableRefork);
     if (isExpected) {
       delete disconnects[worker.process.pid];
       // worker disconnect first, exit expected
       return;
     }
-    if (worker.disableRefork) {
+    if (disableRefork) {
       // worker is killed by master
       return;
     }
@@ -290,4 +294,27 @@ function fork(options) {
       cluster.setupMaster(opts);
     }
   }
+}
+
+/**
+ * set disableRefork
+ *
+ * @param {import('cluster').Worker} worker - worker, Node.js cluster.Worker object
+ * @param {boolean} isDisableRefork - the worker process is not refork
+ * @returns {void}
+ */
+function setDisableRefork(worker, isDisableRefork) {
+  if (worker) {
+    worker.disableRefork = isDisableRefork;
+  }
+}
+
+/**
+ * get disableRefork
+ *
+ * @param {import('cluster').Worker} worker - worker, Node.js cluster.Worker object
+ * @returns {boolean} the worker process is not refork
+ */
+function getDisableRefork(worker) {
+  return (worker && worker.disableRefork) || false;
 }
