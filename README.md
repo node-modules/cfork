@@ -33,7 +33,7 @@ $ npm install cfork --save
 const cfork = require('cfork');
 const util = require('util');
 
-cfork({
+const clusterWorker = cfork({
   exec: '/your/app/worker.js',
   // slaves: ['/your/app/slave.js'],
   // count: require('os').cpus().length,
@@ -66,6 +66,11 @@ cfork({
 process.on('uncaughtException', err => {
   // do what you want
 });
+
+// if you want to dynamically disable refork, you can call the setDisableRefork, priority over the refork parameter
+cfork.setDisableRefork(clusterWorker, true);
+
+
 ```
 
 ### Options
