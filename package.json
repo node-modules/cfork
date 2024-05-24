@@ -32,8 +32,7 @@
     "web": "https://github.com/node-modules/cfork"
   },
   "bugs": {
-    "url": "https://github.com/node-modules/cfork/issues",
-    "email": "fengmk2@gmail.com"
+    "url": "https://github.com/node-modules/cfork/issues"
   },
   "keywords": [
     "cluster",
