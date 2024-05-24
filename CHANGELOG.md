@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/node-modules/cfork/compare/v1.10.0...v1.11.0) (2024-05-24)
+
+
+### Features
+
+* add setDisableRefork helper ([#118](https://github.com/node-modules/cfork/issues/118)) ([3944ff3](https://github.com/node-modules/cfork/commit/3944ff3b52370e3903a3c8142ff59b64b2aa46e2))
+
 ## [1.10.0](https://github.com/node-modules/cfork/compare/v1.9.0...v1.10.0) (2024-02-23)
 
 
