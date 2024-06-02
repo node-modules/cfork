@@ -9,13 +9,14 @@
   "scripts": {
     "test": "mocha -t 15000 test/*.test.js",
     "lint": "eslint index.js test",
-    "ci": "npm run lint && mocha -t 15000 test/*.test.js",
+    "ci": "npm run lint && c8 mocha -t 15000 test/*.test.js",
     "contributor": "git-contributor"
   },
   "dependencies": {
     "utility": "^1.12.0"
   },
   "devDependencies": {
+    "c8": "^9.1.0",
     "childprocess": "1",
     "eslint": "3.12.0",
     "git-contributor": "^2.0.0",
@@ -32,8 +33,7 @@
     "web": "https://github.com/node-modules/cfork"
   },
   "bugs": {
-    "url": "https://github.com/node-modules/cfork/issues",
-    "email": "fengmk2@gmail.com"
+    "url": "https://github.com/node-modules/cfork/issues"
   },
   "keywords": [
     "cluster",

@@ -1,5 +1,4 @@
-cfork
-=======
+# cfork
 
 [![NPM version][npm-image]][npm-url]
 [![Node.js CI](https://github.com/node-modules/cfork/actions/workflows/nodejs.yml/badge.svg)](https://github.com/node-modules/cfork/actions/workflows/nodejs.yml)
