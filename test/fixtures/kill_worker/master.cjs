@@ -2,21 +2,18 @@
 
 var path = require('path');
 var util = require('util');
-var cfork = require('../');
+var cfork = require('../../');
 
 cfork({
-  exec: path.join(__dirname, 'worker.js'),
+  exec: path.join(__dirname, '../worker.cjs'),
   slaves: [
-    path.join(__dirname, 'slave.js')
+    path.join(__dirname, '../slave.cjs'),
   ],
   args: [ 1984 ],
   limit: 4,
-  count: 4,
+  count: 2,
   duration: 60000,
   autoCoverage: true,
-  env: {
-    CFORK_ENV_TEST: '😂',
-  },
 })
 .on('fork', function (worker) {
   console.warn('[%s] [worker:%d] new worker start', Date(), worker.process.pid);
@@ -46,7 +43,18 @@ process.once('SIGTERM', function () {
   process.exit(0);
 });
 
-setTimeout(function () {
-  mock.uncaughtException;
-}, 500);
-console.log('master:%s start', process.pid);
+var cluster = require('cluster');
+var http = require('http');
+var port = 1986;
+
+http.createServer(function (req, res) {
+  // kill worker
+  var count = 0;
+  for (var id in cluster.workers) {
+    var worker = cluster.workers[id];
+    cfork.setDisableRefork(worker, true);
+    worker.process.kill('SIGTERM');
+    count++;
+  }
+  res.end('kill ' + count + ' workers');
+}).listen(port);
