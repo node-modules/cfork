@@ -105,12 +105,7 @@ describe('test/cfork.test.ts', () => {
       });
     }, (err: any) => {
       console.error('[cfork.test.ts] get /async_error error: %s', err);
-      // ECONNRESET on windows
-      if (process.platform === 'win32') {
-        assert.match(err.message, /ECONNRESET/);
-      } else {
-        assert.match(err.message, /(socket hang up|other side closed|timeout|ECONNRESET)/);
-      }
+      assert.match(err.message, /(socket hang up|other side closed|timeout|ECONNRESET)/);
       return true;
     });
 
