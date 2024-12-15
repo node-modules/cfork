@@ -4,6 +4,7 @@
 [![Node.js CI](https://github.com/node-modules/cfork/actions/workflows/nodejs.yml/badge.svg)](https://github.com/node-modules/cfork/actions/workflows/nodejs.yml)
 [![Test coverage][codecov-image]][codecov-url]
 [![npm download][download-image]][download-url]
+[![Node.js Version](https://img.shields.io/node/v/cfork.svg?style=flat)](https://nodejs.org/en/download/)
 
 [npm-image]: https://img.shields.io/npm/v/cfork.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/cfork
@@ -21,16 +22,16 @@ cluster fork and restart easy way.
 ## Install
 
 ```bash
-$ npm install cfork --save
+npm install cfork
 ```
 
 ## Usage
 
-### Example
+### ESM and TypeScript
 
-```js
-const cfork = require('cfork');
-const util = require('util');
+```ts
+import util from 'node:util';
+import { cfork } from 'cfork';
 
 const clusterWorker = cfork({
   exec: '/your/app/worker.js',
@@ -68,37 +69,34 @@ process.on('uncaughtException', err => {
 
 // if you want to dynamically disable refork, you can call the setDisableRefork, priority over the refork parameter
 cfork.setDisableRefork(clusterWorker, true);
+```
 
+### CommonJS
 
+```js
+const { cfork } = require('cfork');
 ```
 
 ### Options
 
-- **exec** : exec file path
-- **slaves** : slave process config
-- **args** : exec arguments
-- **count** : fork worker nums, default is `os.cpus().length`
-- **refork** : refork when worker disconnect or unexpected exit, default is `true`
-- **limit**: limit refork times within the `duration`, default is `60`
-- **duration**: default is `60000`, one minute (so, the `refork times` < `limit / duration`)
-- **autoCoverage**: auto fork with istanbul when `running_under_istanbul` env set, default is `false`
-- **env**: attach some environment variable key-value pairs to the worker / slave process, default to an empty object.
-- **windowsHide**: Hide the forked processes console window that would normally be created on Windows systems, default to false.
-- **serialization**: Specify the kind of serialization used for sending messages between processes. Possible values are 'json' and 'advanced'. See Advanced serialization for child_process for more details. Default: false.
+* **exec** : exec file path
+* **slaves** : slave process config
+* **args** : exec arguments
+* **count** : fork worker nums, default is `os.cpus().length`
+* **refork** : refork when worker disconnect or unexpected exit, default is `true`
+* **limit**: limit refork times within the `duration`, default is `60`
+* **duration**: default is `60000`, one minute (so, the `refork times` < `limit / duration`)
+* **autoCoverage**: auto fork with istanbul when `running_under_istanbul` env set, default is `false`
+* **env**: attach some environment variable key-value pairs to the worker / slave process, default to an empty object.
+* **windowsHide**: Hide the forked processes console window that would normally be created on Windows systems, default to false.
+* **serialization**: Specify the kind of serialization used for sending messages between processes. Possible values are 'json' and 'advanced'. See Advanced serialization for child_process for more details. Default: false.
 
 ## License
 
 [MIT](LICENSE)
 
-<!-- GITCONTRIBUTOR_START -->
-
 ## Contributors
 
-|[<img src="https://avatars.githubusercontent.com/u/156269?v=4" width="100px;"/><br/><sub><b>fengmk2</b></sub>](https://github.com/fengmk2)<br/>|[<img src="https://avatars.githubusercontent.com/u/14790466?v=4" width="100px;"/><br/><sub><b>greenkeeperio-bot</b></sub>](https://github.com/greenkeeperio-bot)<br/>|[<img src="https://avatars.githubusercontent.com/u/985607?v=4" width="100px;"/><br/><sub><b>dead-horse</b></sub>](https://github.com/dead-horse)<br/>|[<img src="https://avatars.githubusercontent.com/u/327019?v=4" width="100px;"/><br/><sub><b>JacksonTian</b></sub>](https://github.com/JacksonTian)<br/>|[<img src="https://avatars.githubusercontent.com/u/1474688?v=4" width="100px;"/><br/><sub><b>luckydrq</b></sub>](https://github.com/luckydrq)<br/>|[<img src="https://avatars.githubusercontent.com/u/2842176?v=4" width="100px;"/><br/><sub><b>XadillaX</b></sub>](https://github.com/XadillaX)<br/>|
-| :---: | :---: | :---: | :---: | :---: | :---: |
-|[<img src="https://avatars.githubusercontent.com/u/360661?v=4" width="100px;"/><br/><sub><b>popomore</b></sub>](https://github.com/popomore)<br/>|[<img src="https://avatars.githubusercontent.com/u/18315?v=4" width="100px;"/><br/><sub><b>hemanth</b></sub>](https://github.com/hemanth)<br/>|[<img src="https://avatars.githubusercontent.com/u/3230673?v=4" width="100px;"/><br/><sub><b>qingdengyue</b></sub>](https://github.com/qingdengyue)<br/>|[<img src="https://avatars.githubusercontent.com/u/1422472?v=4" width="100px;"/><br/><sub><b>jpuncle</b></sub>](https://github.com/jpuncle)<br/>|[<img src="https://avatars.githubusercontent.com/u/1102038?v=4" width="100px;"/><br/><sub><b>hustxiaoc</b></sub>](https://github.com/hustxiaoc)<br/>|[<img src="https://avatars.githubusercontent.com/u/2972143?v=4" width="100px;"/><br/><sub><b>nightink</b></sub>](https://github.com/nightink)<br/>|
-[<img src="https://avatars.githubusercontent.com/u/7971415?v=4" width="100px;"/><br/><sub><b>paranoidjk</b></sub>](https://github.com/paranoidjk)<br/>|[<img src="https://avatars.githubusercontent.com/u/19849579?v=4" width="100px;"/><br/><sub><b>sinkhaha</b></sub>](https://github.com/sinkhaha)<br/>
+[![Contributors](https://contrib.rocks/image?repo=node-modules/cfork)](https://github.com/node-modules/cfork/graphs/contributors)
 
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Sat May 06 2023 00:30:47 GMT+0800`.
-
-<!-- GITCONTRIBUTOR_END -->
+Made with [contributors-img](https://contrib.rocks).

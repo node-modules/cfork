@@ -1,10 +1,10 @@
-'use strict';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const http = require('node:http');
+const { graceful } = require('graceful');
 
-var http = require('http');
-var graceful = require('graceful');
-var port = 1985;
+const port = 1985;
 
-var app = http.createServer(function (req, res) {
+const app = http.createServer((req, res) => {
   if (req.url === '/error') {
     mock.error();
   }
@@ -26,4 +26,4 @@ graceful({
 });
 
 // call cfork on work will be ignore
-require('../')();
+require('../..').cfork();

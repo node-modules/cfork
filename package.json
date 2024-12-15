@@ -2,35 +2,10 @@
   "name": "cfork",
   "version": "1.11.0",
   "description": "cluster fork and restart easy way",
-  "main": "index.js",
-  "files": [
-    "index.js"
-  ],
-  "scripts": {
-    "test": "mocha -t 15000 test/*.test.js",
-    "lint": "eslint index.js test",
-    "ci": "npm run lint && c8 mocha -t 15000 test/*.test.js",
-    "contributor": "git-contributor"
-  },
-  "dependencies": {
-    "utility": "^1.12.0"
-  },
-  "devDependencies": {
-    "c8": "^9.1.0",
-    "childprocess": "1",
-    "eslint": "3.12.0",
-    "git-contributor": "^2.0.0",
-    "graceful": "1",
-    "mocha": "2",
-    "pedding": "1",
-    "should": "11.1.2",
-    "urllib": "2"
-  },
   "homepage": "https://github.com/node-modules/cfork",
   "repository": {
     "type": "git",
-    "url": "git://github.com/node-modules/cfork.git",
-    "web": "https://github.com/node-modules/cfork"
+    "url": "git://github.com/node-modules/cfork.git"
   },
   "bugs": {
     "url": "https://github.com/node-modules/cfork/issues"
@@ -41,9 +16,61 @@
     "cfork",
     "restart"
   ],
-  "engines": {
-    "node": ">= 0.12.0"
-  },
   "author": "fengmk2 <fengmk2@gmail.com> (https://github.com/fengmk2)",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">= 18.19.0"
+  },
+  "dependencies": {
+    "utility": "^2.2.0"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.17.1",
+    "@eggjs/tsconfig": "1",
+    "@types/mocha": "10",
+    "@types/node": "22",
+    "egg-bin": "6",
+    "eslint": "8",
+    "eslint-config-egg": "14",
+    "graceful": "^2.0.0",
+    "tshy": "3",
+    "tshy-after": "1",
+    "typescript": "5",
+    "urllib": "^4.6.8"
+  },
+  "scripts": {
+    "lint": "eslint --cache src test --ext .ts",
+    "pretest": "npm run lint -- --fix && npm run prepublishOnly",
+    "test": "egg-bin test",
+    "preci": "npm run lint && npm run prepublishOnly",
+    "ci": "egg-bin cov",
+    "prepublishOnly": "tshy && tshy-after && attw --pack"
+  },
+  "type": "module",
+  "tshy": {
+    "exports": {
+      ".": "./src/index.ts",
+      "./package.json": "./package.json"
+    }
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "types": "./dist/commonjs/index.d.ts",
+  "main": "./dist/commonjs/index.js",
+  "module": "./dist/esm/index.js"
 }
