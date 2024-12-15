@@ -1,5 +1,51 @@
 # Changelog
 
+## [2.0.0](https://github.com/node-modules/cfork/compare/v1.11.0...v2.0.0) (2024-12-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop Node.js < 18.19.0 support
+
+part of https://github.com/eggjs/egg/issues/3644
+
+https://github.com/eggjs/egg/issues/5257
+
+<!-- This is an auto-generated comment: release notes by coderabbit.ai
+-->
+## Summary by CodeRabbit
+
+## Release Notes
+
+- **New Features**
+- Introduced a new GitHub Actions workflow for automated package
+publishing.
+- Added TypeScript configuration to enhance type safety and modern
+JavaScript compatibility.
+	- New tests for child process management functionality.
+
+- **Updates**
+	- Updated ESLint configuration to utilize external presets.
+	- Modified GitHub Actions CI to specify a more precise Node.js version.
+- Enhanced README with installation and usage examples for ESM and
+TypeScript.
+- Updated package.json to reflect new module structure and dependencies.
+- Improved .gitignore to exclude additional temporary files and
+directories.
+
+- **Bug Fixes**
+- Improved .gitignore to exclude additional temporary files and
+directories.
+
+- **Removals**
+- Removed outdated JavaScript files and configurations in favor of
+CommonJS and TypeScript standards.
+<!-- end of auto-generated comment: release notes by coderabbit.ai -->
+
+### Features
+
+* support cjs and esm both by tshy ([#120](https://github.com/node-modules/cfork/issues/120)) ([b2e1b53](https://github.com/node-modules/cfork/commit/b2e1b53324029ab4861cff4b2d4f1a8d27a45667))
+
 ## [1.11.0](https://github.com/node-modules/cfork/compare/v1.10.0...v1.11.0) (2024-05-24)
 
 

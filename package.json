@@ -1,6 +1,6 @@
 {
   "name": "cfork",
-  "version": "1.11.0",
+  "version": "2.0.0",
   "description": "cluster fork and restart easy way",
   "homepage": "https://github.com/node-modules/cfork",
   "repository": {
