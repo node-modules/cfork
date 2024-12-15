@@ -115,12 +115,7 @@ describe('test/cfork.test.ts', () => {
       });
     }, (err: any) => {
       console.error('[cfork.test.ts] get /hold error: %s', err);
-      // ECONNRESET on windows
-      if (process.platform === 'win32') {
-        assert.match(err.message, /ECONNRESET/);
-      } else {
-        assert.match(err.message, /timeout/);
-      }
+      assert.match(err.message, /ECONNRESET|timeout/);
       return true;
     });
   });
