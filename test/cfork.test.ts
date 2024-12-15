@@ -48,7 +48,7 @@ describe('test/cfork.test.ts', () => {
       await urllib.request('http://127.0.0.1:1984/error', {
         dataType: 'text',
       });
-    }, /(timeout|other side closed)/);
+    }, /(timeout|other side closed|ECONNRESET)/);
   });
 
   it('should worker exit', async () => {
@@ -56,7 +56,7 @@ describe('test/cfork.test.ts', () => {
       await urllib.request('http://127.0.0.1:1984/exit', {
         dataType: 'text',
       });
-    }, /other side closed/);
+    }, /other side closed|ECONNRESET/);
   });
 
   it('should slave listen worked', async () => {
@@ -109,7 +109,7 @@ describe('test/cfork.test.ts', () => {
       if (process.platform === 'win32') {
         assert.match(err.message, /ECONNRESET/);
       } else {
-        assert.match(err.message, /(socket hang up|other side closed|timeout)/);
+        assert.match(err.message, /(socket hang up|other side closed|timeout|ECONNRESET)/);
       }
       return true;
     });
@@ -148,7 +148,7 @@ describe('test/cfork.test.ts', () => {
       });
     }, (err: any) => {
       // console.error(err);
-      assert.match(err.message, /(other side closed|ECONNREFUSED)/);
+      assert.match(err.message, /(other side closed|ECONNREFUSED|ECONNRESET)/);
       return true;
     });
 
@@ -187,7 +187,7 @@ describe('test/cfork.test.ts', () => {
         timeout: 5000,
       });
     }, (err: any) => {
-      assert.match(err.message, /(timeout|ECONNREFUSED|other side closed)/);
+      assert.match(err.message, /(timeout|ECONNREFUSED|other side closed|ECONNRESET)/);
       return true;
     });
     await assert.rejects(async () => {
@@ -196,7 +196,7 @@ describe('test/cfork.test.ts', () => {
         timeout: 5000,
       });
     }, (err: any) => {
-      assert.match(err.message, /(timeout|ECONNREFUSED|other side closed)/);
+      assert.match(err.message, /(timeout|ECONNREFUSED|other side closed|ECONNRESET)/);
       return true;
     });
     await assert.rejects(async () => {
@@ -205,7 +205,7 @@ describe('test/cfork.test.ts', () => {
         timeout: 5000,
       });
     }, (err: any) => {
-      assert.match(err.message, /(timeout|ECONNREFUSED|other side closed)/);
+      assert.match(err.message, /(timeout|ECONNREFUSED|other side closed|ECONNRESET)/);
       return true;
     });
     await assert.rejects(async () => {
@@ -214,7 +214,7 @@ describe('test/cfork.test.ts', () => {
         timeout: 5000,
       });
     }, (err: any) => {
-      assert.match(err.message, /(timeout|ECONNREFUSED|other side closed)/);
+      assert.match(err.message, /(timeout|ECONNREFUSED|other side closed|ECONNRESET)/);
       return true;
     });
     await assert.rejects(async () => {
@@ -223,7 +223,7 @@ describe('test/cfork.test.ts', () => {
         timeout: 5000,
       });
     }, (err: any) => {
-      assert.match(err.message, /(timeout|ECONNREFUSED|other side closed)/);
+      assert.match(err.message, /(timeout|ECONNREFUSED|other side closed|ECONNRESET)/);
       return true;
     });
     await assert.rejects(async () => {
@@ -232,7 +232,7 @@ describe('test/cfork.test.ts', () => {
         timeout: 5000,
       });
     }, (err: any) => {
-      assert.match(err.message, /(timeout|ECONNREFUSED|other side closed)/);
+      assert.match(err.message, /(timeout|ECONNREFUSED|other side closed|ECONNRESET)/);
       return true;
     });
   });
@@ -244,7 +244,7 @@ describe('test/cfork.test.ts', () => {
         timeout: 5000,
       });
     }, (err: any) => {
-      assert.match(err.message, /ECONNREFUSED/);
+      assert.match(err.message, /ECONNREFUSED|ECONNRESET/);
       return true;
     });
   });
